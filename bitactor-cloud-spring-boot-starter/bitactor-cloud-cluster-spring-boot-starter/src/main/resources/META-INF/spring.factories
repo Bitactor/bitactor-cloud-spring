@@ -1,0 +1,3 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+com.bitactor.framework.cloud.spring.boot.cluster.BitactorClusterAutoConfiguration
+

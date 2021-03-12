@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Licensed to the Apache Software Foundation (ASF) under one or more
+  ~ contributor license agreements.  See the NOTICE file distributed with
+  ~ this work for additional information regarding copyright ownership.
+  ~ The ASF licenses this file to You under the Apache License, Version 2.0
+  ~  (the "License"); you may not use this file except in compliance with
+  ~ the License.  You may obtain a copy of the License at
+  ~
+  ~      http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.sonatype.oss</groupId>
+        <artifactId>oss-parent</artifactId>
+        <version>7</version>
+    </parent>
+    <groupId>com.bitactor.framework.cloud.spring</groupId>
+    <artifactId>bitactor-cloud-spring</artifactId>
+    <version>${revision}</version>
+    <packaging>pom</packaging>
+    <name>${project.artifactId}</name>
+
+    <modules>
+        <!--        <module>bitactor-spring-dependencies</module>-->
+        <!--        <module>bitactor-spring-core</module>-->
+        <!--        <module>bitactor-spring-mvc</module>-->
+        <!--        <module>bitactor-spring-backend</module>-->
+        <!--        <module>bitactor-spring-connector</module>-->
+        <!--        <module>bitactor-connector-spring-boot-starter</module>-->
+        <!--        <module>bitactor-backend-spring-boot-starter</module>-->
+        <!--        <module>bitactor-client-spring-boot-starter</module>-->
+        <!--        <module>bitactor-console-spring-boot-starter</module>-->
+        <module>bitactor-cloud-spring-core</module>
+        <module>bitactor-cloud-spring-controller</module>
+        <module>bitactor-cloud-spring-model</module>
+        <module>bitactor-cloud-spring-rpc</module>
+        <module>bitactor-cloud-spring-boot-starter</module>
+        <module>bitactor-cloud-spring-boot-starter-dependencies</module>
+    </modules>
+    <properties>
+        <java.version>1.8</java.version>
+        <!-- Maven plugins -->
+        <maven_cobertura_version>2.7</maven_cobertura_version>
+        <maven_javadoc_version>3.0.0</maven_javadoc_version>
+        <maven_flatten_version>1.1.0</maven_flatten_version>
+        <!--spring-->
+        <spring_version>5.2.0.RELEASE</spring_version>
+        <spring_boot_version>2.2.0.RELEASE</spring_boot_version>
+        <!--bitactor-core-->
+        <bitactor_core_vision>1.0.0-SNAPSHOT</bitactor_core_vision>
+        <!--框架版本-->
+        <revision>1.0.0-SNAPSHOT</revision>
+    </properties>
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>com.bitactor.framework.core</groupId>
+                <artifactId>bitactor-core-dependencies</artifactId>
+                <version>${bitactor_core_vision}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <!--spring 框架-->
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-framework-bom</artifactId>
+                <version>${spring_version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <!--springboot 启动框架-->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter</artifactId>
+                <version>${spring_boot_version}</version>
+            </dependency>
+            <!--springboot 自动配置器-->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-configuration-processor</artifactId>
+                <version>${spring_boot_version}</version>
+            </dependency>
+            <!--springboot 日志框架-->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-logging</artifactId>
+                <version>${spring_boot_version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>8</source>
+                    <target>8</target>
+                </configuration>
+            </plugin>
+            <!-- Source attach plugin -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>cobertura-maven-plugin</artifactId>
+                <version>${maven_cobertura_version}</version>
+                <configuration>
+                    <formats>
+                        <format>html</format>
+                        <format>xml</format>
+                    </formats>
+                    <check/>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>flatten-maven-plugin</artifactId>
+                <version>${maven_flatten_version}</version>
+                <configuration>
+                    <updatePomFile>true</updatePomFile>
+                    <flattenMode>resolveCiFriendliesOnly</flattenMode>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>flatten</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>flatten</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>flatten.clean</id>
+                        <phase>clean</phase>
+                        <goals>
+                            <goal>clean</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>

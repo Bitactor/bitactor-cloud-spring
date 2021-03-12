@@ -1,0 +1,4 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+com.bitactor.framework.cloud.spring.core.BitactorAutoConfiguration
+org.springframework.context.ApplicationListener=\
+com.bitactor.framework.cloud.spring.core.listener.StartBannerApplicationListener
