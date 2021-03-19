@@ -23,6 +23,9 @@ import com.bitactor.framework.core.Version;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.boot.Banner.Mode;
+import org.springframework.boot.ansi.AnsiColor;
+import org.springframework.boot.ansi.AnsiOutput;
+import org.springframework.boot.ansi.AnsiStyle;
 import org.springframework.boot.context.event.ApplicationEnvironmentPreparedEvent;
 import org.springframework.boot.context.logging.LoggingApplicationListener;
 import org.springframework.context.ApplicationListener;
@@ -41,6 +44,9 @@ public class StartBannerApplicationListener implements ApplicationListener<Appli
         BANNER_MODE = bANNER_MODE;
     }
 
+    private static final String BITACTOR_CLOUD = " :: Bitactor Cloud :: ";
+
+    private static final int STRAP_LINE_SIZE = 42;
     @Override
     public void onApplicationEvent(ApplicationEnvironmentPreparedEvent event) {
         if (BANNER_MODE == Mode.OFF) {
@@ -55,10 +61,16 @@ public class StartBannerApplicationListener implements ApplicationListener<Appli
     }
 
     private String buildBannerText() {
+        String version = Version.getVersion();
+        version = (version != null) ? " (v" + version + ")" : "";
+        StringBuilder padding = new StringBuilder();
+        while (padding.length() < STRAP_LINE_SIZE - (version.length() + BITACTOR_CLOUD.length())) {
+            padding.append(" ");
+        }
         StringBuilder bannerTextBuilder = new StringBuilder();
-        bannerTextBuilder.append(BannerConstants.LINE_SEPARATOR).append(BitactorLogo.logo)
-                .append(" :: bitactor ::        (v").append(Version.getVersion()).append(")")
-                .append(BannerConstants.LINE_SEPARATOR);
+        bannerTextBuilder.append(BannerConstants.LINE_SEPARATOR).append(BitactorLogo.logo);
+        bannerTextBuilder.append(AnsiOutput.toString(AnsiColor.GREEN, BITACTOR_CLOUD, AnsiColor.DEFAULT, padding.toString(),
+                AnsiStyle.FAINT, version));
         return bannerTextBuilder.toString();
     }
 }

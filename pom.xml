@@ -32,15 +32,6 @@
     <name>${project.artifactId}</name>
 
     <modules>
-        <!--        <module>bitactor-spring-dependencies</module>-->
-        <!--        <module>bitactor-spring-core</module>-->
-        <!--        <module>bitactor-spring-mvc</module>-->
-        <!--        <module>bitactor-spring-backend</module>-->
-        <!--        <module>bitactor-spring-connector</module>-->
-        <!--        <module>bitactor-connector-spring-boot-starter</module>-->
-        <!--        <module>bitactor-backend-spring-boot-starter</module>-->
-        <!--        <module>bitactor-client-spring-boot-starter</module>-->
-        <!--        <module>bitactor-console-spring-boot-starter</module>-->
         <module>bitactor-cloud-spring-core</module>
         <module>bitactor-cloud-spring-controller</module>
         <module>bitactor-cloud-spring-model</module>

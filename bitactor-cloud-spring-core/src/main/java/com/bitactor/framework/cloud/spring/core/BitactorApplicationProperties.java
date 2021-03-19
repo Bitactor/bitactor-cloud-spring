@@ -39,7 +39,6 @@ import java.net.InetAddress;
 @ConfigurationProperties(prefix = "spring.application")
 public class BitactorApplicationProperties implements InitializingBean, BeanFactoryAware {
     @Nullable
-    //@Value("${spring.application.name}")
     @NestedConfigurationProperty
     private String name;
     @NestedConfigurationProperty
