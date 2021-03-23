@@ -10,15 +10,10 @@
 
 ### 介绍
 
-* Bitactor Cloud 是一款适配[Spring Boot](https://spring.io/projects/spring-boot)，网络层基于[Netty](https://netty.io/)的分布式NIO服务器框架，可快速开发出一个易维护、易扩展且稳定高的分布式服务器，让开发者专注于业务功能的开发<br>
+* Bitactor Cloud 是一款适配[Spring Boot](https://spring.io/projects/spring-boot)，网络层基于[Netty](https://netty.io/)的分布式NIO服务框架，可快速开发出一个易维护、易扩展且稳定高的分布式服务，让开发者专注于业务功能的开发<br>
 * 实现了基于注解的消息控制层，让基于长连接网络的请求像 spring MVC 一样简单易用。<br>
 * 参考[Apache Dubbo](https://github.com/apache/dubbo)实现的面向接口的定制化RPC，并基于nacos的服务注册中心。<br>
 * 适配springboot,并且继承了springboot的所有特性、达到了松耦合的效果，提高了系统的可重用性、可维护性以及可扩展性<br>
-  **优点：**
-
-* 使用简单，学习成本低
-* 功能强大，非常容易写出性能优秀可扩展的分布式集群服务
-* 适配性强，可以方便的使用支持springboot的第三方的优秀组件。
 
 ### 协议
 
@@ -74,17 +69,11 @@ MessageData 专有
         <version>2.2.2.RELEASE</version>
         <relativePath/>
     </parent>
-    <!--连接器的启动框架-->
     <dependencies>
         <dependency>
              <groupId>com.bitactor.framework.cloud.spring.boot</groupId>
              <artifactId>bitactor-cloud-connector-spring-boot-starter</artifactId>
              <version>1.0.0</version>
-        </dependency>
-        <dependency>
-            <groupId>com.bitactor.framework.cloud.spring.boot</groupId>
-            <artifactId>bitactor-cloud-cluster-spring-boot-starter</artifactId>
-            <version>1.0.0</version>
         </dependency>
     </dependencies>
 ```
@@ -133,7 +122,7 @@ spring:
 ```
 
 #### 分布式服务
-   * 分布式服务启用，仅需添加以下依赖即可，具体配置及使用方法参见 [官方文档](https://doc.bitactor.com/)
+   分布式服务启用，仅需添加以下依赖即可，具体使用方法以及更多特性请参见 [官方文档](https://doc.bitactor.com/)
 ```xml
     <dependency>
         <groupId>com.bitactor.framework.cloud.spring.boot</groupId>
