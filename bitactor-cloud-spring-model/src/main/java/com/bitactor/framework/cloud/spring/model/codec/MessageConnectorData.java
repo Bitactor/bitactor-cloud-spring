@@ -24,6 +24,8 @@ import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufUtil;
 import io.netty.buffer.Unpooled;
 
+import java.util.Arrays;
+
 /**
  * @author WXH
  */
@@ -83,5 +85,15 @@ public class MessageConnectorData extends MessageData {
      */
     public static MessageConnectorData builder(byte[] data, byte[] messageData, int protoType, int msgId, int commandId) {
         return new MessageConnectorData(msgId, data, messageData, commandId, protoType);
+    }
+
+    @Override
+    public String toString() {
+        return "MessageConnectorData{" +
+                "msgId=" + msgId +
+                ", commandId=" + commandId +
+                ", protoType=" + protoType +
+                ", msgData=" + Arrays.toString(msgData) +
+                '}';
     }
 }

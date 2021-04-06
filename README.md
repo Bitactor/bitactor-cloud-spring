@@ -1,7 +1,7 @@
 
 
 <h1 align="center">
- <a href="http://cloud.bitactor.com" title="Bitactor">bitactor</a>
+ <a href="http://cloud.bitactor.com" title="Bitactor Cloud">Bitactor Cloud</a>
 </h1>
 
 

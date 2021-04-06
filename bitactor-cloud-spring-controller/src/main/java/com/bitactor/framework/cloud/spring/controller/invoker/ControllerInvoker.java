@@ -81,11 +81,11 @@ public class ControllerInvoker {
     }
 
     public int getReqCommandID() {
-        return MessageUtil.getCommandId(getReqProtoClass());
+        return mapping.reqCmd() != 0 ? mapping.reqCmd() : MessageUtil.getCommandId(getReqProtoClass());
     }
 
     public int getRespCommandID() {
-        return MessageUtil.getCommandId(getRespProtoClass());
+        return mapping.respCmd() != 0 ? mapping.respCmd() : MessageUtil.getCommandId(getRespProtoClass());
     }
 
     public String getReqCommand() {

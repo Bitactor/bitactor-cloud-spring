@@ -100,14 +100,14 @@ public class MessageUtil {
         if (object == null) {
             return UNKNOWN_COMMAND;
         }
-        return getCommandId(object) + "_" + object.getClass().getSimpleName();
+        return object.getClass().getSimpleName();
     }
 
     public static String getCommand(Class clazz) {
         if (clazz == null) {
             return UNKNOWN_COMMAND;
         }
-        return getCommandId(clazz) + "_" + clazz.getSimpleName();
+        return clazz.getSimpleName();
     }
 
 

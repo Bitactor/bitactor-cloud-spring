@@ -15,38 +15,27 @@
  * limitations under the License.
  */
 
-package com.bitactor.framework.cloud.spring.controller.annotation;
+package com.bitactor.framework.cloud.spring.boot.client.extension;
 
+import java.util.concurrent.CompletableFuture;
 
-import com.bitactor.framework.cloud.spring.model.constants.ProtocolType;
+/**
+ * @author WXH
+ */
+public class ResponseMapping<R> {
+    private CompletableFuture<R> future;
+    private Class<R> respClazz;
 
-import java.lang.annotation.*;
+    public ResponseMapping(CompletableFuture<R> future, Class<R> respClazz) {
+        this.future = future;
+        this.respClazz = respClazz;
+    }
 
-@Target(ElementType.METHOD)
-@Retention(RetentionPolicy.RUNTIME)
-@Documented
-@Inherited
-public @interface BitactorRequestMapping {
-    ProtocolType protocol() default ProtocolType.PROTO;
+    public CompletableFuture<R> getFuture() {
+        return future;
+    }
 
-    /**
-     * 是否异步
-     *
-     * @return
-     */
-    boolean async() default false;
-
-    /**
-     * 请求消息的序列化id，默认序列化对象名的hashcode
-     *
-     * @return
-     */
-    int reqCmd() default 0;
-
-    /**
-     * 响应消息的序列化id，默认序列化对象名的hashcode
-     *
-     * @return
-     */
-    int respCmd() default 0;
+    public Class<R> getRespClazz() {
+        return respClazz;
+    }
 }

@@ -63,6 +63,22 @@ public class MsgSender {
     }
 
     /**
+     * 发送指定协议类型的消息到指定客户端 指定 commandId
+     *
+     * @param sessionId
+     * @param protoType
+     * @param commandId
+     * @param object
+     */
+    public static void sendMsg(SessionId sessionId, ProtocolType protoType, int commandId, Object object) {
+        try {
+            sendMsg(sessionId, protoType, commandId, MessageUtil.encode(protoType, object));
+        } catch (Throwable throwable) {
+            throwable.printStackTrace();
+        }
+    }
+
+    /**
      * 发送指定协议类型的消息到指定客户端
      *
      * @param sessionId
@@ -71,7 +87,7 @@ public class MsgSender {
      */
     public static void sendMsg(SessionId sessionId, ProtocolType protoType, Object object) {
         try {
-            sendMsg(sessionId, protoType, object.getClass().getSimpleName().hashCode(), MessageUtil.encode(protoType, object));
+            sendMsg(sessionId, protoType, MessageUtil.getCommandId(object), MessageUtil.encode(protoType, object));
         } catch (Throwable throwable) {
             throwable.printStackTrace();
         }
@@ -83,9 +99,22 @@ public class MsgSender {
      * @param sessionId
      * @param object
      */
+    public static void sendMsgProtoBuf(SessionId sessionId, int commandId, GeneratedMessageV3 object) {
+        try {
+            sendMsg(sessionId, ProtocolType.PROTO, commandId, object.toByteArray());
+        } catch (Throwable throwable) {
+            throwable.printStackTrace();
+        }
+    }
+    /**
+     * 发送protobuf 消息
+     *
+     * @param sessionId
+     * @param object
+     */
     public static void sendMsgProtoBuf(SessionId sessionId, GeneratedMessageV3 object) {
         try {
-            sendMsg(sessionId, ProtocolType.PROTO, object.getClass().getSimpleName().hashCode(), object.toByteArray());
+            sendMsg(sessionId, ProtocolType.PROTO, MessageUtil.getCommandId(object), object.toByteArray());
         } catch (Throwable throwable) {
             throwable.printStackTrace();
         }

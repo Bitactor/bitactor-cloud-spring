@@ -15,38 +15,34 @@
  * limitations under the License.
  */
 
-package com.bitactor.framework.cloud.spring.controller.annotation;
+package com.bitactor.framework.cloud.spring.boot.client.extension;
 
+import com.bitactor.framework.cloud.spring.model.utils.MessageUtil;
 
-import com.bitactor.framework.cloud.spring.model.constants.ProtocolType;
+/**
+ * @author WXH
+ */
+public abstract class NoticeMapping {
+    private int noticeId;
+    private Class<?> noticeClazz;
 
-import java.lang.annotation.*;
+    public NoticeMapping(Class<?> noticeClazz) {
+        this.noticeId = MessageUtil.getCommandId(noticeClazz);
+        this.noticeClazz = noticeClazz;
+    }
 
-@Target(ElementType.METHOD)
-@Retention(RetentionPolicy.RUNTIME)
-@Documented
-@Inherited
-public @interface BitactorRequestMapping {
-    ProtocolType protocol() default ProtocolType.PROTO;
+    public NoticeMapping(int noticeId, Class<?> noticeClazz) {
+        this.noticeId = noticeId;
+        this.noticeClazz = noticeClazz;
+    }
 
-    /**
-     * 是否异步
-     *
-     * @return
-     */
-    boolean async() default false;
+    public abstract void notice(Object notice);
 
-    /**
-     * 请求消息的序列化id，默认序列化对象名的hashcode
-     *
-     * @return
-     */
-    int reqCmd() default 0;
+    public int getNoticeId() {
+        return noticeId;
+    }
 
-    /**
-     * 响应消息的序列化id，默认序列化对象名的hashcode
-     *
-     * @return
-     */
-    int respCmd() default 0;
+    public Class<?> getNoticeClazz() {
+        return noticeClazz;
+    }
 }

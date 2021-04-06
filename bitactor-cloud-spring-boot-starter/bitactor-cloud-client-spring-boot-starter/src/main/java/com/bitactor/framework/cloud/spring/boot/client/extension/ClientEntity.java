@@ -43,9 +43,19 @@ public interface ClientEntity<T> {
 
     void onReceived(MessageConnectorData connMessage);
 
-    <R> R sendSync(Object req, Class<R> resp, RequestStage requestEvent);
+    void addNoticeMapping(NoticeMapping notice);
 
-    <R> CompletableFuture<R> sendAsync(Object req, Class<R> resp, RequestStage requestEvent);
+    <R> R sendSync(Object req, Class<R> resp, RequestStage requestStage);
+
+    boolean justSend(Object req);
+
+    boolean justSend(int reqCmd, Object req) throws Exception;
+
+    <R> R sendSync(int reqCmd, Object req, Class<R> respClazz, RequestStage requestStage);
+
+    <R> CompletableFuture<R> sendAsync(Object req, Class<R> resp, RequestStage requestStage);
+
+    <R> CompletableFuture<R> sendAsync(int reqCmd, Object req, Class<R> respClazz, RequestStage requestStage);
 
     void onDestroy();
 

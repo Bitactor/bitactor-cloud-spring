@@ -156,10 +156,12 @@ public class ControllerContext {
             } else {
                 ControllerInvoker other = CONTROLLER_PROTO_INVOKER_MAP.get(invoker.getReqCommandID());
                 throw new RepetitionException("Controller commandId repetition : \n["
+                        + invoker.getReqCommandID() + "-"
                         + invoker.getReqCommand() + "] method : "
                         + invoker.getMethod().getName() + " proto: "
                         + invoker.getMapping().protocol().valueStr()
                         + "\n -----: \n["
+                        + other.getReqCommandID() + "-"
                         + other.getReqCommand() + "] method : "
                         + other.getMethod().getName() + " proto: "
                         + other.getMapping().protocol().valueStr()
