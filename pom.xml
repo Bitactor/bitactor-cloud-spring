@@ -30,7 +30,24 @@
     <version>${revision}</version>
     <packaging>pom</packaging>
     <name>${project.artifactId}</name>
-
+    <licenses>
+        <license>
+            <name>The Apache Software License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+        </license>
+    </licenses>
+    <scm>
+        <url>https://github.com/Bitactor/bitactor-cloud-spring</url>
+        <connection>https://github.com/Bitactor/bitactor-cloud-spring.git</connection>
+        <developerConnection>https://github.com/Bitactor/bitactor-cloud-spring</developerConnection>
+    </scm>
+    <developers>
+        <developer>
+            <name>wu xiang hui</name>
+            <email>972612778@qq.com</email>
+            <url>https://github.com/Bitactor/bitactor-cloud-spring</url>
+        </developer>
+    </developers>
     <modules>
         <module>bitactor-cloud-spring-core</module>
         <module>bitactor-cloud-spring-controller</module>
@@ -43,15 +60,19 @@
         <java.version>1.8</java.version>
         <!-- Maven plugins -->
         <maven_cobertura_version>2.7</maven_cobertura_version>
-        <maven_javadoc_version>3.0.0</maven_javadoc_version>
         <maven_flatten_version>1.1.0</maven_flatten_version>
+        <maven_source_plugin>2.2.1</maven_source_plugin>
+        <maven_javadoc_plugin>2.9.1</maven_javadoc_plugin>
+        <maven_gpg_plugin>1.5</maven_gpg_plugin>
+        <maven_release_plugin>2.5.1</maven_release_plugin>
+        <nexus_staging_maven_plugin>1.6.7</nexus_staging_maven_plugin>
         <!--spring-->
         <spring_version>5.2.0.RELEASE</spring_version>
         <spring_boot_version>2.2.0.RELEASE</spring_boot_version>
         <!--bitactor-core-->
-        <bitactor_core_vision>1.0.0-SNAPSHOT</bitactor_core_vision>
+        <bitactor_core_vision>1.0.0</bitactor_core_vision>
         <!--框架版本-->
-        <revision>1.0.0-SNAPSHOT</revision>
+        <revision>1.0.0</revision>
     </properties>
     <dependencyManagement>
         <dependencies>
@@ -100,19 +121,6 @@
                     <target>8</target>
                 </configuration>
             </plugin>
-            <!-- Source attach plugin -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-source-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>attach-sources</id>
-                        <goals>
-                            <goal>jar</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>cobertura-maven-plugin</artifactId>
@@ -150,6 +158,107 @@
                     </execution>
                 </executions>
             </plugin>
+            <!-- Source -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>2.2.1</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>jar-no-fork</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <!-- Javadoc -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>${maven_javadoc_plugin}</version>
+                <configuration>
+                    <show>private</show>
+                    <nohelp>true</nohelp>
+                    <charset>UTF-8</charset>
+                    <encoding>UTF-8</encoding>
+                    <docencoding>UTF-8</docencoding>
+                    <additionalparam>-Xdoclint:none</additionalparam>
+                    <!-- TODO 临时解决不规范的javadoc生成报错,后面要规范化后把这行去掉 -->
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <!-- GPG -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-gpg-plugin</artifactId>
+                <version>${maven_gpg_plugin}</version>
+                <executions>
+                    <execution>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>sign</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <!--Release -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-release-plugin</artifactId>
+                <version>${maven_release_plugin}</version>
+            </plugin>
+            <plugin>
+                <groupId>org.sonatype.plugins</groupId>
+                <artifactId>nexus-staging-maven-plugin</artifactId>
+                <version>${nexus_staging_maven_plugin}</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <serverId>ossrh</serverId>
+                    <nexusUrl>https://s01.oss.sonatype.org/</nexusUrl>
+                    <autoReleaseAfterClose>true</autoReleaseAfterClose>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
+    <profiles>
+        <profile>
+            <id>release</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-gpg-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>sign</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+    <distributionManagement>
+        <snapshotRepository>
+            <id>sonatype-nexus-snapshots</id>
+            <name>Sonatype Nexus Snapshots</name>
+            <url>https://s01.oss.sonatype.org/content/repositories/snapshots/</url>
+        </snapshotRepository>
+        <repository>
+            <id>sonatype-nexus-staging</id>
+            <name>Nexus Release Repository</name>
+            <url>https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+        </repository>
+    </distributionManagement>
 </project>
