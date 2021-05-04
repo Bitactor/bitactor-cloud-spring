@@ -37,11 +37,12 @@ public class NettyConnectorCodec extends NettyDefaultCodec {
 
     public MessageWrapper buildMessageData(byte[] data) {
         ByteBuf buf = Unpooled.buffer(data.length);
+        buf = buf.order(getByteOrder());
         buf.writeBytes(data);
         int protoType = buf.readByte();
         int msgId = buf.readInt();
         int commandId = buf.readInt();
         byte[] messageData = ByteBufUtil.getBytes(buf, buf.readerIndex(), buf.readableBytes());
-        return MessageConnectorData.builder(data, messageData,protoType,msgId, commandId);
+        return MessageConnectorData.builder(data, messageData, protoType, msgId, commandId);
     }
 }

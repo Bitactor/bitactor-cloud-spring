@@ -70,9 +70,9 @@
         <spring_version>5.2.0.RELEASE</spring_version>
         <spring_boot_version>2.2.0.RELEASE</spring_boot_version>
         <!--bitactor-core-->
-        <bitactor_core_vision>1.0.0</bitactor_core_vision>
+        <bitactor_core_vision>1.0.1</bitactor_core_vision>
         <!--框架版本-->
-        <revision>1.0.0</revision>
+        <revision>1.0.1</revision>
     </properties>
     <dependencyManagement>
         <dependencies>
@@ -248,22 +248,27 @@
                 </plugins>
             </build>
         </profile>
-        <profile>
+        <!--<profile>
             <id>no-deploy</id>
-            <!--
+            &lt;!&ndash;
             据https://github.com/sonatype/nexus-maven-plugins/tree/master/staging/maven-plugin
             skipNexusStagingDeployMojo在最后一个反应堆模块中可能不会被设置为true。因为我们不
             想要部署我们的最后一个模块，也不是一个虚拟模块，我们只需忽略相关的模块正在进行部署。
-            -->
+            &ndash;&gt;
             <activation>
                 <property>
                     <name>!deploy</name>
                 </property>
             </activation>
             <modules>
+                <module>bitactor-cloud-spring-core</module>
+                <module>bitactor-cloud-spring-controller</module>
+                <module>bitactor-cloud-spring-model</module>
+                <module>bitactor-cloud-spring-rpc</module>
+                <module>bitactor-cloud-spring-boot-starter</module>
                 <module>bitactor-cloud-spring-boot-starter-dependencies</module>
             </modules>
-        </profile>
+        </profile>-->
     </profiles>
     <distributionManagement>
         <snapshotRepository>

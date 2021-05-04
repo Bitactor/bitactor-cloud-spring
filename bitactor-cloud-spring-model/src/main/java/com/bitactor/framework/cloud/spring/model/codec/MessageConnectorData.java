@@ -24,6 +24,7 @@ import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufUtil;
 import io.netty.buffer.Unpooled;
 
+import java.nio.ByteOrder;
 import java.util.Arrays;
 
 /**
@@ -59,6 +60,21 @@ public class MessageConnectorData extends MessageData {
 
     public byte[] getMsgData() {
         return msgData;
+    }
+
+    @Override
+    public byte[] getData(ByteOrder byteOrder) {
+        ByteBuf dataBuf = Unpooled.buffer(getMsgData().length + NetConstants.BYTES_4_LENGTH * 2 + NetConstants.BYTES_1_LENGTH);
+        dataBuf.order(byteOrder);
+        if (byteOrder.equals(ByteOrder.BIG_ENDIAN)) {
+            dataBuf.writeInt(msgId);
+            dataBuf.writeInt(commandId);
+        } else {
+            dataBuf.writeIntLE(msgId);
+            dataBuf.writeIntLE(commandId);
+        }
+        dataBuf.writeBytes(getMsgData());
+        return ByteBufUtil.getBytes(dataBuf);
     }
 
     /**

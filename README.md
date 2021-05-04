@@ -73,7 +73,7 @@ MessageData 专有
         <dependency>
              <groupId>com.bitactor.framework.cloud.spring.boot</groupId>
              <artifactId>bitactor-cloud-connector-spring-boot-starter</artifactId>
-             <version>1.0.0</version>
+             <version>LATEST</version>
         </dependency>
     </dependencies>
 ```
@@ -81,7 +81,7 @@ MessageData 专有
 ### 单服务启动示例
 
 ```java
-@EnableBitactorClusterConfiguration
+@EnableBitactorConnectorConfiguration
 @SpringBootApplication()
 @BitactorController(connector = "CONNECTOR")
 public class SingleSimpleApplication {
