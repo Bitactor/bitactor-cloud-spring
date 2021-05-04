@@ -72,7 +72,7 @@
         <!--bitactor-core-->
         <bitactor_core_vision>1.0.1</bitactor_core_vision>
         <!--框架版本-->
-        <revision>1.0.1</revision>
+        <revision>2.0.0-SNAPSHOT</revision>
     </properties>
     <dependencyManagement>
         <dependencies>
