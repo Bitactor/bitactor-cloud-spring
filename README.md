@@ -4,7 +4,6 @@
  <a href="http://cloud.bitactor.com" title="Bitactor Cloud">Bitactor Cloud</a>
 </h1>
 
-
   [![JDK](https://img.shields.io/badge/JDK-1.8%2B-green.svg)](https://www.oracle.com/technetwork/java/javase/downloads/index.html)
   [![license](https://img.shields.io/badge/license-Apache%202-4EB1BA.svg)](https://www.apache.org/licenses/LICENSE-2.0)
 
@@ -12,10 +11,10 @@
 
 * Bitactor Cloud 是一款适配[Spring Boot](https://spring.io/projects/spring-boot)，网络层基于[Netty](https://netty.io/)的分布式NIO服务框架，可快速开发出一个易维护、易扩展且稳定高的分布式服务，让开发者专注于业务功能的开发<br>
 * 实现了基于注解的消息控制层，让基于长连接网络的请求像 spring MVC 一样简单易用。<br>
-* 参考[Apache Dubbo](https://github.com/apache/dubbo)实现的面向接口的定制化RPC，并基于nacos的服务注册中心。<br>
+* 参考[Apache Dubbo](https://github.com/apache/dubbo)实现的支持面向接口的高性能可异步且以[Nacos](https://nacos.io/zh-cn/docs/quick-start.html)为注册中心的RPC框架。<br>
 * 适配springboot,并且继承了springboot的所有特性、达到了松耦合的效果，提高了系统的可重用性、可维护性以及可扩展性<br>
 
-### 协议
+### bitactor协议
 
 #### 支持的协议
 
@@ -39,14 +38,14 @@ MessageData 专有
 
 #### 协议名词解释
 
-* head: 包头指定包体长度，不包括head的长度，head 长度可以通过配置修改
-* packetType: 包类型，见下表
-* protoType:**仅用于 MessageData 包** 指定序列化类型，支持Protobuf|Json
-* msgId:**仅用于 MessageData 包**
-  消息号，单次请求响应消息号相同，每增加一次请求消息号+1,推送消息的msg固定为0
-* commandId:**仅用于 MessageData 包**
-  序列化类的简单类名的hashCode,用于序列化&反序列化
-* data:**仅用于 MessageData 包** 序列化类的byte[]
+  |  参数名   | 	名词 	|	解释                                                             |
+  |:---------|:---------|:------------------------------------------------------------------|
+  |head      | 包头      |指定包体长度，不包括head的长度。                                       |
+  |protoType | 包类型    | 包类型 协议包类型。                                                 |
+  |protoType | 协议类型  | 指定序列化类型，支持Protobuf/Json。                                  |
+  |msgId     | 消息号    | 单次请求响应消息号相同，每增加一次请求消息号+1,推送消息的msg固定为0。     |
+  |commandId | 协议解析id| 序列化类的简单类名的hashCode值,用于序列化&反序列化（也可自定义）         |
+  |data      | 数据内容  | Protobuf/Json的 序列化类的byte[]                                    |
 
 #### bitactor协议包类型
 
@@ -81,8 +80,8 @@ MessageData 专有
 ### 单服务启动示例
 
 ```java
-@EnableBitactorConnectorConfiguration
 @SpringBootApplication()
+@EnableBitactorConnectorConfiguration
 @BitactorController(connector = "CONNECTOR")
 public class SingleSimpleApplication {
     public static void main(String[] args) throws Throwable {
@@ -122,7 +121,7 @@ spring:
 ```
 
 #### 分布式服务
-   分布式服务启用，仅需添加以下依赖即可，具体使用方法以及更多特性请参见 [官方文档](https://doc.bitactor.com/)
+   分布式服务启用，仅需添加以下依赖即可，具体使用方法以及更多特性请参见 [官方文档](https://cloud.bitactor.com/)
 ```xml
     <dependency>
         <groupId>com.bitactor.framework.cloud.spring.boot</groupId>
