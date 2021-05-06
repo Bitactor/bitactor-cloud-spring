@@ -12,7 +12,7 @@
 * Bitactor Cloud 是一款适配[Spring Boot](https://spring.io/projects/spring-boot)，网络层基于[Netty](https://netty.io/)的分布式NIO服务框架，可快速开发出一个易维护、易扩展且稳定高的分布式服务，让开发者专注于业务功能的开发<br>
 * 实现了基于注解的消息控制层，让基于长连接网络的请求像 spring MVC 一样简单易用。<br>
 * 参考[Apache Dubbo](https://github.com/apache/dubbo)实现的支持面向接口的高性能可异步且以[Nacos](https://nacos.io/zh-cn/docs/quick-start.html)为注册中心的RPC框架。<br>
-* 适配springboot,并且继承了springboot的所有特性、达到了松耦合的效果，提高了系统的可重用性、可维护性以及可扩展性<br>
+* 支持springboot,并且继承了springboot的所有特性、达到了松耦合的效果，提高了系统的可重用性、可维护性以及可扩展性<br>
 
 ### bitactor协议
 
@@ -60,7 +60,13 @@ MessageData 专有
 | MessageClose     | 0x10         | 关闭消息 |
 
 ### 开始使用
+下面的代码片段来自[Bitactor Cloud Spring Sample](https://github.com/Bitactor/bitactor-cloud-spring-sample)。在继续之前，您可以克隆示例项目并进入'bitactor-cloud-spring-sample'子目录。
+```bash
+# git clone https://github.com/Bitactor/bitactor-cloud-spring-sample.git
+```
 
+### 单服务启动示例
+#### pom.xml
 ```xml
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -76,9 +82,7 @@ MessageData 专有
         </dependency>
     </dependencies>
 ```
-
-### 单服务启动示例
-
+#### 启动类
 ```java
 @SpringBootApplication()
 @EnableBitactorConnectorConfiguration
@@ -101,7 +105,7 @@ public class SingleSimpleApplication {
     }
 }
 ```
-
+#### yaml配置
 ```yaml
 spring:
   application:
@@ -120,7 +124,7 @@ spring:
       open-ws-ssl: true
 ```
 
-#### 分布式服务
+### 分布式服务
    分布式服务启用，仅需添加以下依赖即可，具体使用方法以及更多特性请参见 [官方文档](https://cloud.bitactor.com/)
 ```xml
     <dependency>
