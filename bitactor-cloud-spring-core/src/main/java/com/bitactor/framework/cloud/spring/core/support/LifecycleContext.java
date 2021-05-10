@@ -61,7 +61,7 @@ public class LifecycleContext {
                 return;
             }
             if (AnnotationUtils.getAnnotation(aClass, Lifecycle.class) != null) {
-                for (Method method : aClass.getMethods()) {
+                for (Method method : aClass.getDeclaredMethods()) {
                     if (AnnotationUtils.getAnnotation(method, StartBefore.class) != null) {
                         lifecycleStartBefore.add(new MethodInvoker(aClass, method));
                         logger.info("Add lifecycle start before : [" + aClass.getName() + "]");

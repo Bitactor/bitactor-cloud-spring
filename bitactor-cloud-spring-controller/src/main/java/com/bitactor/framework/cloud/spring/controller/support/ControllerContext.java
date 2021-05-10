@@ -434,5 +434,11 @@ public class ControllerContext {
         return reqParam;
     }
 
+    public ConcurrentHashMap<Integer, ControllerInvoker> getControllerJsonInvoker() {
+        return CONTROLLER_JSON_INVOKER_MAP;
+    }
 
+    public ConcurrentHashMap<Integer, ControllerInvoker> getControllerProtoInvoker() {
+        return CONTROLLER_PROTO_INVOKER_MAP;
+    }
 }

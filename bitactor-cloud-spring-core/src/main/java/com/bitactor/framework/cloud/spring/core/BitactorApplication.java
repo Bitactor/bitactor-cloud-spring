@@ -35,6 +35,7 @@ import org.springframework.context.event.ContextClosedEvent;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
 
+import java.lang.reflect.Method;
 import java.util.List;
 
 /**
@@ -147,7 +148,10 @@ public class BitactorApplication implements ApplicationListener<ApplicationConte
                 }
                 methodInvoker.setInstance(bean);
             }
-            methodInvoker.getMethod().invoke(methodInvoker.getInstance());
+            Method method = methodInvoker.getMethod();
+            method.setAccessible(true);
+            method.invoke(methodInvoker.getInstance());
+            method.setAccessible(false);
         }
     }
 
