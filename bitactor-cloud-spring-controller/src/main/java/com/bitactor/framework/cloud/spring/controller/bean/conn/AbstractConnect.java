@@ -23,14 +23,14 @@ import com.bitactor.framework.cloud.spring.controller.session.ClientNetSession;
 /**
  * @author WXH
  */
-public abstract class AbstractConnect {
+public abstract class AbstractConnect<T> {
 
     /**
      * 玩家
      *
      * @return
      */
-    public abstract long getUid();
+    public abstract T getUid();
 
     /**
      * 获取玩家Session

@@ -24,13 +24,13 @@ import java.util.Collection;
  *
  * @author WXH
  */
-public interface ConnectManager<T extends AbstractConnect> {
+public interface ConnectManager<U, T extends AbstractConnect<U>> {
 
-    T get(long uid);
+    T get(U uid);
 
     boolean add(T connect);
 
-    T remove(long uid);
+    T remove(U uid);
 
     int onlineSize();
 
