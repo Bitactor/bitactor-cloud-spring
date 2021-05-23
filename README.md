@@ -122,7 +122,7 @@ spring:
 ```
 
 #### 分布式服务
-   分布式服务启用，仅需添加以下依赖即可，具体使用方法以及更多特性请参见 [官方文档](https://doc.bitactor.com/)
+   分布式服务启用，仅需添加以下依赖即可，具体使用方法以及更多特性请参见 [官方文档](https://www.bitactor.com/)
 ```xml
     <dependency>
         <groupId>com.bitactor.framework.cloud.spring.boot</groupId>

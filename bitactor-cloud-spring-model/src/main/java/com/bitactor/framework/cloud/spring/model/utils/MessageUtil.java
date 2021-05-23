@@ -127,9 +127,16 @@ public class MessageUtil {
     }
 
 
+    public static byte[] encode(Object obj) throws Exception {
+        return encode(checkObjType(obj.getClass()), obj);
+    }
+
     public static byte[] encode(ProtocolType protocolType, Object obj) throws Exception {
         if (obj == null) {
             return new byte[0];
+        }
+        if (obj instanceof byte[]) {
+            return (byte[]) obj;
         }
         byte[] bytes = new byte[0];
         if (protocolType.equals(ProtocolType.PROTO)) {

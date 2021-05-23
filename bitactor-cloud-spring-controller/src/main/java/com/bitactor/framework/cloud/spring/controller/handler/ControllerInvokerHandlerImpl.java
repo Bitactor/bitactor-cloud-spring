@@ -94,7 +94,7 @@ public class ControllerInvokerHandlerImpl implements ControllerInvokerHandler {
             }
             Method method = invoker.getMethod();
             returnType = method.getReturnType();
-            if (controllerContext.checkNeedAuth(session)) {
+            if (controllerContext.checkNeedAuth(session, invoker)) {
                 messageBytes = controllerContext.buildErrorMessageByte(null, MsgErrorType.NEED_AUTH, session, type, msgId, commandId);
                 return new ControllerResp(returnType, messageBytes);
             }

@@ -34,4 +34,10 @@ public @interface BitactorController {
     String connector() default "";
 
     boolean async() default false;
+    /**
+     * 是否需要授权
+     *
+     * @return
+     */
+    boolean auth() default false;
 }
