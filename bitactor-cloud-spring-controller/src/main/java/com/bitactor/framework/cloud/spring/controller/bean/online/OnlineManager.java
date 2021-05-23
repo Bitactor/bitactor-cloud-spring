@@ -25,7 +25,7 @@ public interface OnlineManager {
 
     OnlineInfo update(OnlineInfo onlineInfo);
 
-    OnlineInfo get(String id);
+    OnlineInfo get(Object id);
 
     OnlineInfo remove(OnlineInfo onlineInfo);
 }

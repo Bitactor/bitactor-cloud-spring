@@ -18,12 +18,6 @@
 package com.bitactor.framework.cloud.spring.controller.support;
 
 import com.alibaba.fastjson.JSON;
-import com.bitactor.framework.cloud.spring.model.codec.MessageConnectorData;
-import com.bitactor.framework.cloud.spring.model.constants.MsgErrorType;
-import com.bitactor.framework.cloud.spring.model.constants.ProtocolType;
-import com.bitactor.framework.cloud.spring.model.utils.MessageUtil;
-import com.bitactor.framework.cloud.spring.core.BitactorApplicationProperties;
-import com.bitactor.framework.cloud.spring.core.utils.SpringUtils;
 import com.bitactor.framework.cloud.spring.controller.annotation.BitactorController;
 import com.bitactor.framework.cloud.spring.controller.annotation.BitactorRequestMapping;
 import com.bitactor.framework.cloud.spring.controller.annotation.ProtocolBody;
@@ -37,6 +31,12 @@ import com.bitactor.framework.cloud.spring.controller.extension.CustomAuthHandle
 import com.bitactor.framework.cloud.spring.controller.extension.ErrorMessageHandler;
 import com.bitactor.framework.cloud.spring.controller.invoker.ControllerInvoker;
 import com.bitactor.framework.cloud.spring.controller.session.ClientNetSession;
+import com.bitactor.framework.cloud.spring.core.BitactorApplicationProperties;
+import com.bitactor.framework.cloud.spring.core.utils.SpringUtils;
+import com.bitactor.framework.cloud.spring.model.codec.MessageConnectorData;
+import com.bitactor.framework.cloud.spring.model.constants.MsgErrorType;
+import com.bitactor.framework.cloud.spring.model.constants.ProtocolType;
+import com.bitactor.framework.cloud.spring.model.utils.MessageUtil;
 import com.bitactor.framework.core.exception.ErrorSessionException;
 import com.bitactor.framework.core.exception.NoMatchControllerException;
 import com.bitactor.framework.core.exception.RepetitionException;
@@ -51,7 +51,7 @@ import org.springframework.beans.factory.BeanCreationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.stereotype.Component;
-import org.springframework.util.ClassUtils;
+import com.bitactor.framework.core.utils.lang.ClassUtils;
 
 import java.io.UnsupportedEncodingException;
 import java.lang.annotation.Annotation;
@@ -144,7 +144,7 @@ public class ControllerContext {
         }
         // protobuf 协议类验证返回值是否是protobuf
         if (invoker.getMapping().protocol().equals(ProtocolType.PROTO)) {
-            if (!GeneratedMessageV3.class.isAssignableFrom(invoker.getMethod().getReturnType())) {
+            if (ClassUtils.isGenericClass(invoker.getMethod().getReturnType()) && !GeneratedMessageV3.class.isAssignableFrom(invoker.getMethod().getReturnType())) {
                 logger.error("Mapping controller reqCommand [{}}] respCommand [{}] protocol : [{}] method [{}], is not a protobuf returnType: {}"
                         , invoker.getReqCommand(), invoker.getRespCommand(), invoker.getMapping().protocol().valueStr(), invoker.getMethod().getName(), invoker.getMethod().getReturnType());
                 return;
@@ -375,7 +375,10 @@ public class ControllerContext {
      * @param session
      * @return
      */
-    public boolean checkNeedAuth(ClientNetSession session) {
+    public boolean checkNeedAuth(ClientNetSession session, ControllerInvoker invoker) {
+        if (!invoker.auth()) {
+            return false;
+        }
         CustomAuthHandler handler = null;
         try {
             handler = SpringUtils.getBean(CustomAuthHandler.class);
@@ -384,6 +387,7 @@ public class ControllerContext {
         return Optional.ofNullable(handler).orElse(new CustomAuthHandler() {
             @Override
             public boolean checkNeedAuth(ClientNetSession session) {
+                logger.debug("You have enabled authorization, but do not implement CustomAuthHandler. Please check your code");
                 return false;
             }
         }).checkNeedAuth(session);
@@ -417,7 +421,7 @@ public class ControllerContext {
             }
             if (parameterTypes[i] == ClientNetSession.class) {
                 args[i] = session;
-            } else if (ClassUtils.isAssignable(AbstractConnect.class, parameterTypes[i])) {
+            } else if (ClassUtils.isAssignableFrom(AbstractConnect.class, parameterTypes[i])) {
                 if (connectManager == null) {
                     throw new ErrorSessionException("Connect not match session");
                 }
