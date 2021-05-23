@@ -35,6 +35,12 @@ public @interface BitactorRequestMapping {
      * @return
      */
     boolean async() default false;
+    /**
+     * 是否需要授权
+     *
+     * @return
+     */
+    boolean auth() default false;
 
     /**
      * 请求消息的序列化id，默认序列化对象名的hashcode

@@ -132,5 +132,16 @@ public class ControllerInvoker {
         return getMapping().async();
     }
 
+    /**
+     * 是否是需要授权，controller 优先于 mapping
+     *
+     * @return
+     */
+    public boolean auth() {
+        if (getController().auth()) {
+            return true;
+        }
+        return getMapping().auth();
+    }
 
 }

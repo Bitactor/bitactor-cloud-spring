@@ -28,8 +28,7 @@ import java.util.HashMap;
 public class ClientNetSession {
     private HashMap<String, Object> param = new HashMap<String, Object>();
     private SessionId sessionId;
-    private long uid;
-    private String userId;
+    private Object uid;
 
     public ClientNetSession(String sessionId, String sid) {
         this.sessionId = new SessionId(sessionId, sid);
@@ -51,11 +50,11 @@ public class ClientNetSession {
         this.sessionId = sessionId;
     }
 
-    public long getUid() {
+    public Object getUid() {
         return uid;
     }
 
-    public void setUid(long uid) {
+    public void setUid(Object uid) {
         this.uid = uid;
     }
 
@@ -66,14 +65,6 @@ public class ClientNetSession {
             SpringUtils.getBean(OnlineManager.class).update(build());
         } catch (BeansException ignored) {
         }*/
-    }
-
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
     }
 
     public <T> T getParamInstance(String key) {
@@ -102,9 +93,10 @@ public class ClientNetSession {
         sb.append("param: ").append(param);
         return sb.toString();
     }
+
     public OnlineInfo build() {
         OnlineInfo onlineInfo = new OnlineInfo();
-        onlineInfo.setId(getUserId());
+        onlineInfo.setId(getUid());
         onlineInfo.setSessionId(getSessionId());
         onlineInfo.setParams(new HashMap<>(getParam()));
         return onlineInfo;
