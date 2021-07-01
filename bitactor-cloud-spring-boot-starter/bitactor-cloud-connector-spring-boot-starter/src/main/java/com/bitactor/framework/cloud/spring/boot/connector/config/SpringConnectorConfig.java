@@ -41,7 +41,7 @@ public class SpringConnectorConfig extends SpringExportConfig {
     /**
      * 是否开启channel 有序消息处理线程,如果该值true 则需要msgReceiveThreadPoolOpen
      */
-    private Boolean msgReceiveOrderedQueueOpen;
+    private Boolean msgReceiveEventLoopOpen;
     /**
      * websocket 路径 ws//127.0.0.1:443+路径
      */
@@ -68,12 +68,12 @@ public class SpringConnectorConfig extends SpringExportConfig {
         this.ipLimit = ipLimit;
     }
 
-    public Boolean getMsgReceiveOrderedQueueOpen() {
-        return msgReceiveOrderedQueueOpen;
+    public Boolean getMsgReceiveEventLoopOpen() {
+        return msgReceiveEventLoopOpen;
     }
 
-    public void setMsgReceiveOrderedQueueOpen(Boolean msgReceiveOrderedQueueOpen) {
-        this.msgReceiveOrderedQueueOpen = msgReceiveOrderedQueueOpen;
+    public void setMsgReceiveEventLoopOpen(Boolean msgReceiveEventLoopOpen) {
+        this.msgReceiveEventLoopOpen = msgReceiveEventLoopOpen;
     }
 
     public String getWsPath() {
@@ -99,13 +99,6 @@ public class SpringConnectorConfig extends SpringExportConfig {
         if (getPort() == null || getPort() <= 0) {
             setPort(NetUtils.getAvailablePort());
         }
-        if (Objects.nonNull(getMsgReceiveThreadPoolOpen()) && getMsgReceiveThreadPoolOpen()) {
-            setMsgReceiveOrderedQueueOpen(true);
-        }
-        if (Objects.isNull(getMsgReceiveThreadPoolOpen()) && Objects.isNull(getMsgReceiveOrderedQueueOpen())) {
-            setMsgReceiveThreadPoolOpen(true);
-            setMsgReceiveOrderedQueueOpen(true);
-        }
         UrlProperties url = super.toUrl();
         if (url.getParameter(NetConstants.CODEC_KEY) == null) {
             url = url.addParameter(NetConstants.CODEC_KEY, ConnectorConstants.DEFAULT_CONNECTOR_CODEC);
@@ -116,8 +109,8 @@ public class SpringConnectorConfig extends SpringExportConfig {
         if (Objects.nonNull(getOpenWsSsl())) {
             url = url.addParameter(NetConstants.WS_OPEN_SSL, getOpenWsSsl());
         }
-        if (msgReceiveOrderedQueueOpen != null) {
-            url = url.addParameter(NetConstants.MSG_RECEIVE_ORDERED_QUEUE_OPEN_KEY, msgReceiveOrderedQueueOpen.toString());
+        if (msgReceiveEventLoopOpen != null) {
+            url = url.addParameter(NetConstants.MSG_RECEIVE_EVENT_LOOP_KEY, msgReceiveEventLoopOpen.toString());
         }
         url = url.addParameter(NetConstants.IP_LIMIT_NUM, ipLimit);
         url = bigEndian == null ? url.addParameter(NetConstants.BYTE_ODER_BIG_ENDIAN_KEY, false) : url.addParameter(NetConstants.BYTE_ODER_BIG_ENDIAN_KEY, getBigEndian());

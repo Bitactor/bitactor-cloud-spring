@@ -20,12 +20,12 @@ package com.bitactor.framework.cloud.spring.controller.bean.online;
 /**
  * @author WXH
  */
-public interface OnlineManager {
-    OnlineInfo add(OnlineInfo onlineInfo);
+public interface OnlineManager<K> {
+    OnlineInfo<K> add(OnlineInfo<K> onlineInfo);
 
-    OnlineInfo update(OnlineInfo onlineInfo);
+    OnlineInfo<K> update(OnlineInfo<K> onlineInfo);
 
-    OnlineInfo get(Object id);
+    OnlineInfo<K> get(K id);
 
-    OnlineInfo remove(OnlineInfo onlineInfo);
+    OnlineInfo<K> remove(OnlineInfo<K> onlineInfo);
 }

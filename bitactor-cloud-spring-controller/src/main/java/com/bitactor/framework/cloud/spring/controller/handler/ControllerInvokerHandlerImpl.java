@@ -26,7 +26,7 @@ import com.bitactor.framework.cloud.spring.controller.bean.ControllerResp;
 import com.bitactor.framework.cloud.spring.controller.bean.MappingReqParam;
 import com.bitactor.framework.cloud.spring.controller.bean.MessageBytes;
 import com.bitactor.framework.cloud.spring.controller.bean.conn.AbstractConnect;
-import com.bitactor.framework.cloud.spring.controller.concurrent.ThreadAdapter;
+import com.bitactor.framework.cloud.spring.controller.concurrent.SessionMsgDispatcher;
 import com.bitactor.framework.cloud.spring.controller.extension.ControllerInvokerHandler;
 import com.bitactor.framework.cloud.spring.controller.invoker.ControllerInvoker;
 import com.bitactor.framework.cloud.spring.controller.session.ClientNetSession;
@@ -49,7 +49,7 @@ public class ControllerInvokerHandlerImpl implements ControllerInvokerHandler {
     @Autowired
     private ControllerContext controllerContext;
     @Autowired(required = false)
-    private ThreadAdapter adapter;
+    private SessionMsgDispatcher adapter;
 
     @Override
     public ControllerResp request(ClientNetSession session, ProtocolType type, int msgId, int commandId, byte[] msg) throws Throwable {

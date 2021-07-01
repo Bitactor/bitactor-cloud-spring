@@ -87,10 +87,6 @@ public class SpringExportConfig {
      */
     private Long heartbeatPeriod;
     /**
-     * 是否开启数据消息处理线程池
-     */
-    private Boolean msgReceiveThreadPoolOpen;
-    /**
      * 握手消息的数据获取的类集合
      */
     private Set<String> handShakeDataBoundClasses;
@@ -195,14 +191,6 @@ public class SpringExportConfig {
         this.heartbeatPeriod = heartbeatPeriod;
     }
 
-    public Boolean getMsgReceiveThreadPoolOpen() {
-        return msgReceiveThreadPoolOpen;
-    }
-
-    public void setMsgReceiveThreadPoolOpen(Boolean msgReceiveThreadPoolOpen) {
-        this.msgReceiveThreadPoolOpen = msgReceiveThreadPoolOpen;
-    }
-
     public Set<String> getHandShakeDataBoundClasses() {
         return handShakeDataBoundClasses;
     }
@@ -250,9 +238,6 @@ public class SpringExportConfig {
         }
         if (openHeartbeat != null) {
             parameters.put(NetConstants.HEARTBEAT_OPEN_KEY, openHeartbeat.toString());
-        }
-        if (msgReceiveThreadPoolOpen != null) {
-            parameters.put(NetConstants.MSG_RECEIVE_THREAD_POOL_OPEN_KEY, msgReceiveThreadPoolOpen.toString());
         }
         if (heartbeatPeriod != null && heartbeatPeriod > 1000) {
             parameters.put(NetConstants.HEARTBEAT_PERIOD_KEY, heartbeatPeriod.toString());

@@ -64,14 +64,15 @@ public class BackendMsgHandlerImpl implements ConnectorMsgHandler {
                 // 异步请求远程Controller
                 logger.debug("Start  async controller,channel:{},method:{} ->{} cmd: {}", channel.getChannelId(), mappingInfo.getMethodName(), mappingInfo.getFromGroup(), commandId);
                 backendRPCMessageHandler.request(session, type, msgId, commandId, msg, (response, cause) -> {
-                    logger.debug("Finish async controller,channel:{},method:{} ->{} cmd:{} use:{}ms", channel.getChannelId(), mappingInfo.getMethodName(), mappingInfo.getFromGroup(), commandId, System.currentTimeMillis() - start);
                     try {
                         if (Objects.nonNull(cause)) {
+                            logger.error("finish  async controller,channel:{},method:{} ->{} cmd: {}, RPC error: {}", channel.getChannelId(), mappingInfo.getMethodName(), mappingInfo.getFromGroup(), commandId, cause.getMessage());
                             throw cause;
                         }
                         doResponse(channel, type, response);
+                        logger.debug("Finish async controller,channel:{},method:{} ->{} cmd:{} use:{}ms", channel.getChannelId(), mappingInfo.getMethodName(), mappingInfo.getFromGroup(), commandId, System.currentTimeMillis() - start);
+
                     } catch (Throwable throwable) {
-                        throwable.printStackTrace();
                         doErrorResp(channel, session, type, msgId, commandId, throwable);
                     }
                 });

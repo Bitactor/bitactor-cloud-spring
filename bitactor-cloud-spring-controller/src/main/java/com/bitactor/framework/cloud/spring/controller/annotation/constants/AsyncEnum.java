@@ -15,32 +15,8 @@
  * limitations under the License.
  */
 
-package com.bitactor.framework.cloud.spring.controller.annotation;
+package com.bitactor.framework.cloud.spring.controller.annotation.constants;
 
-import com.bitactor.framework.cloud.spring.controller.annotation.constants.AsyncEnum;
-import com.bitactor.framework.cloud.spring.controller.annotation.constants.AuthEnum;
-import org.springframework.core.annotation.AliasFor;
-import org.springframework.stereotype.Component;
-
-import java.lang.annotation.*;
-
-@Target(ElementType.TYPE)
-@Retention(RetentionPolicy.RUNTIME)
-@Documented
-@Inherited
-@Component
-public @interface BitactorController {
-    @AliasFor(annotation = Component.class)
-    String value() default "";
-
-    String connector() default "";
-
-    AsyncEnum async() default AsyncEnum.DEFAULT;
-
-    /**
-     * 是否需要授权
-     *
-     * @return
-     */
-    AuthEnum auth() default AuthEnum.DEFAULT;
+public enum AsyncEnum {
+    DEFAULT, ASYNC, SYNC
 }

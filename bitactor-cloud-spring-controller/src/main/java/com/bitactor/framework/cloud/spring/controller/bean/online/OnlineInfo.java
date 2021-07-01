@@ -26,8 +26,8 @@ import java.util.Map;
 /**
  * @author WXH
  */
-public class OnlineInfo {
-    private Object id;
+public class OnlineInfo<K> {
+    private K id;
     private SessionId sessionId;
     private Map<String, Object> params = new HashMap<>();
 
@@ -42,11 +42,11 @@ public class OnlineInfo {
         return (T) this.params.get(key);
     }
 
-    public Object getId() {
+    public K getId() {
         return id;
     }
 
-    public void setId(Object id) {
+    public void setId(K id) {
         this.id = id;
     }
 

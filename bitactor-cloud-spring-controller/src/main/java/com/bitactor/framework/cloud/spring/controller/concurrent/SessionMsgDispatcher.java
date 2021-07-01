@@ -23,6 +23,6 @@ import com.bitactor.framework.cloud.spring.controller.session.ClientNetSession;
 /**
  * @author WXH
  */
-public interface ThreadAdapter {
+public interface SessionMsgDispatcher {
     void doIt(ClientNetSession session, Runnable runnable);
 }
