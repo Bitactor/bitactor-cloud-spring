@@ -171,6 +171,10 @@ public class ConsumerModule extends RegistrySupport implements NotifyListener, C
                     logger.warn("[There are no services available on              ] : " + url.getGroup());
                     continue;
                 }
+                // 服务者是自己
+                if(getAppProperties().getSID().equals(url.getGroupAndId())){
+                    continue;
+                }
                 ConsumerBound consumerBound = customerBoundMap.get(url.getGroup());
                 if (consumerBound == null) {
                     // 若没有已经建立好对应group的 ConsumerBound 就新建一个，
