@@ -42,27 +42,12 @@ public class SpringExportConfig {
     private Integer port;
 
     /**
-     * 网络连接的处理器的线程池名称
-     */
-    private String threadPool;
-
-    /**
-     * 线程数量仅限【fixed】固定线程池
-     */
-    private Integer threads;
-
-    /**
-     * io 线程大小 仅限【fixed】
+     * netty 服务工作（worker）线程池 大小
      */
     private Integer ioThreads;
 
     /**
-     * 线程池队列长度
-     */
-    private Integer queues;
-
-    /**
-     * 最大连接数
+     * 最大连接数，0表示不限制，默认： 0
      */
     private Integer accepts;
 
@@ -70,10 +55,7 @@ public class SpringExportConfig {
      * 消息解码器类
      */
     private String codec;
-    /**
-     * @deprecated 接收消息体的大小
-     */
-    private Integer payload;
+
     /**
      * 是否开启心跳，默认开启
      */
@@ -111,36 +93,12 @@ public class SpringExportConfig {
         this.port = port;
     }
 
-    public String getThreadPool() {
-        return threadPool;
-    }
-
-    public void setThreadPool(String threadPool) {
-        this.threadPool = threadPool;
-    }
-
-    public Integer getThreads() {
-        return threads;
-    }
-
-    public void setThreads(Integer threads) {
-        this.threads = threads;
-    }
-
     public Integer getIoThreads() {
         return ioThreads;
     }
 
     public void setIoThreads(Integer ioThreads) {
         this.ioThreads = ioThreads;
-    }
-
-    public Integer getQueues() {
-        return queues;
-    }
-
-    public void setQueues(Integer queues) {
-        this.queues = queues;
     }
 
     public Integer getAccepts() {
@@ -157,14 +115,6 @@ public class SpringExportConfig {
 
     public void setCodec(String codec) {
         this.codec = codec;
-    }
-
-    public Integer getPayload() {
-        return payload;
-    }
-
-    public void setPayload(Integer payload) {
-        this.payload = payload;
     }
 
     public Boolean getOpenHeartbeat() {
@@ -209,29 +159,17 @@ public class SpringExportConfig {
 
     public UrlProperties toUrl() {
         Map<String, String> parameters = new HashMap<String, String>();
-        if (StringUtils.isNotEmpty(threadPool)) {
-            parameters.put(NetConstants.THREAD_POOL_KEY, threadPool);
-        }
         if (StringUtils.isNotEmpty(codec)) {
             parameters.put(NetConstants.CODEC_KEY, codec);
         }
         if (CollectionUtils.isNotEmpty(handShakeDataBoundClasses)) {
             parameters.put(NetConstants.HAND_SHAKE_DATA_BOUND_CLASS_KEY, StringUtils.join(handShakeDataBoundClasses, ","));
         }
-        if (threads != null && threads > 0) {
-            parameters.put(NetConstants.THREADS_KEY, threads.toString());
-        }
         if (ioThreads != null && ioThreads > 0) {
             parameters.put(NetConstants.IO_THREADS_KEY, ioThreads.toString());
         }
-        if (queues != null && queues > 0) {
-            parameters.put(NetConstants.QUEUES_KEY, queues.toString());
-        }
         if (accepts != null && accepts > 0) {
             parameters.put(NetConstants.ACCEPTS_KEY, accepts.toString());
-        }
-        if (payload != null && payload > 0) {
-            parameters.put(NetConstants.PAYLOAD_KEY, payload.toString());
         }
         if (heartbeatTimeout != null && heartbeatTimeout > 1000) {
             parameters.put(NetConstants.HEARTBEAT_TIMEOUT_KEY, heartbeatTimeout.toString());

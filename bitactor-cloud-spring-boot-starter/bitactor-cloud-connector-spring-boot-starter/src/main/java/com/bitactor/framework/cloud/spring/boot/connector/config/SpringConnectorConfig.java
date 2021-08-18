@@ -39,9 +39,18 @@ public class SpringConnectorConfig extends SpringExportConfig {
      */
     private int ipLimit;
     /**
-     * 是否开启channel 有序消息处理线程,如果该值true 则需要msgReceiveThreadPoolOpen
+     * 是否开启channel 有序消息处理线程（非netty worker）,如果该值true 则需要msgReceiveEventLoopOpen
      */
     private Boolean msgReceiveEventLoopOpen;
+    /**
+     * 自定义消息处理器事件循环线程池的前缀名
+     */
+    private String msgEventLoopNamePrefix;
+
+    /**
+     * 自定义消息处理器事件循环线程池大小
+     */
+    private Integer msgEventLoopThreads;
     /**
      * websocket 路径 ws//127.0.0.1:443+路径
      */
@@ -76,6 +85,22 @@ public class SpringConnectorConfig extends SpringExportConfig {
         this.msgReceiveEventLoopOpen = msgReceiveEventLoopOpen;
     }
 
+    public String getMsgEventLoopNamePrefix() {
+        return msgEventLoopNamePrefix;
+    }
+
+    public void setMsgEventLoopNamePrefix(String msgEventLoopNamePrefix) {
+        this.msgEventLoopNamePrefix = msgEventLoopNamePrefix;
+    }
+
+    public Integer getMsgEventLoopThreads() {
+        return msgEventLoopThreads;
+    }
+
+    public void setMsgEventLoopThreads(Integer msgEventLoopThreads) {
+        this.msgEventLoopThreads = msgEventLoopThreads;
+    }
+
     public String getWsPath() {
         return wsPath;
     }
@@ -102,6 +127,12 @@ public class SpringConnectorConfig extends SpringExportConfig {
         UrlProperties url = super.toUrl();
         if (url.getParameter(NetConstants.CODEC_KEY) == null) {
             url = url.addParameter(NetConstants.CODEC_KEY, ConnectorConstants.DEFAULT_CONNECTOR_CODEC);
+        }
+        if (StringUtils.isNotEmpty(msgEventLoopNamePrefix)) {
+            url = url.addParameter(NetConstants.MSG_RECEIVE_EVENT_LOOP_PREFIX_KEY, msgEventLoopNamePrefix);
+        }
+        if (msgEventLoopThreads != null && msgEventLoopThreads > 0) {
+            url = url.addParameter(NetConstants.MSG_RECEIVE_EVENT_LOOP_THREADS_KEY, msgEventLoopThreads);
         }
         if (!StringUtils.isEmpty(getWsPath())) {
             url = url.addParameter(NetConstants.WS_URL_PATH_KEY, getWsPath());

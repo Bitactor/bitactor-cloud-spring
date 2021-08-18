@@ -30,11 +30,13 @@ import com.bitactor.framework.core.logger.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.ContextClosedEvent;
 import org.springframework.context.event.ContextRefreshedEvent;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 /**
  * @author WXH
  */
+@Order(200)
 @Component
 public class ProviderStarter implements BitactorStarter {
     private final static Logger logger = LoggerFactory.getLogger(ProviderStarter.class);
