@@ -65,7 +65,7 @@ public class MessageConnectorData extends MessageData {
     @Override
     public byte[] getData(ByteOrder byteOrder) {
         ByteBuf dataBuf = Unpooled.buffer(getMsgData().length + NetConstants.BYTES_4_LENGTH * 2 + NetConstants.BYTES_1_LENGTH);
-        dataBuf.order(byteOrder);
+        dataBuf.writeByte(protoType);
         if (byteOrder.equals(ByteOrder.BIG_ENDIAN)) {
             dataBuf.writeInt(msgId);
             dataBuf.writeInt(commandId);

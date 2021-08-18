@@ -48,25 +48,9 @@ public class SpringConsumerConfig {
      */
     private String routerAdapter;
     /**
-     * 连接服务的延迟打印，在心跳开启的情况下才会打印
+     * 是否开启订阅服务的延迟打印，在心跳开启的情况下才会打印
      */
     private Boolean loggerDelay;
-
-    public String getHost() {
-        return host;
-    }
-
-    public void setHost(String host) {
-        this.host = host;
-    }
-
-    public Integer getPort() {
-        return port;
-    }
-
-    public void setPort(Integer port) {
-        this.port = port;
-    }
 
     public Boolean getLoggerDelay() {
         return loggerDelay;
@@ -93,7 +77,7 @@ public class SpringConsumerConfig {
     }
 
     public UrlProperties toUrl() {
-        UrlProperties url = new UrlProperties(NetConstants.DEFAULT_PROTOCOL, getHost(), getPort(), getSubscribe());
+        UrlProperties url = new UrlProperties(NetConstants.DEFAULT_PROTOCOL, host, port, getSubscribe());
         if (!StringUtils.isEmpty(routerAdapter)) {
             url = url.addParameter(RPCConstants.ROUTER_ADAPTER_KEY, routerAdapter);
         }

@@ -39,9 +39,18 @@ public class SpringConnectorConfig extends SpringExportConfig {
      */
     private int ipLimit;
     /**
-     * 是否开启channel 有序消息处理线程,如果该值true 则需要msgReceiveThreadPoolOpen
+     * 是否开启channel 有序消息处理线程（非netty worker）,如果该值true 则需要msgReceiveEventLoopOpen
      */
-    private Boolean msgReceiveOrderedQueueOpen;
+    private Boolean msgReceiveEventLoopOpen;
+    /**
+     * 自定义消息处理器事件循环线程池的前缀名
+     */
+    private String msgEventLoopNamePrefix;
+
+    /**
+     * 自定义消息处理器事件循环线程池大小
+     */
+    private Integer msgEventLoopThreads;
     /**
      * websocket 路径 ws//127.0.0.1:443+路径
      */
@@ -68,12 +77,28 @@ public class SpringConnectorConfig extends SpringExportConfig {
         this.ipLimit = ipLimit;
     }
 
-    public Boolean getMsgReceiveOrderedQueueOpen() {
-        return msgReceiveOrderedQueueOpen;
+    public Boolean getMsgReceiveEventLoopOpen() {
+        return msgReceiveEventLoopOpen;
     }
 
-    public void setMsgReceiveOrderedQueueOpen(Boolean msgReceiveOrderedQueueOpen) {
-        this.msgReceiveOrderedQueueOpen = msgReceiveOrderedQueueOpen;
+    public void setMsgReceiveEventLoopOpen(Boolean msgReceiveEventLoopOpen) {
+        this.msgReceiveEventLoopOpen = msgReceiveEventLoopOpen;
+    }
+
+    public String getMsgEventLoopNamePrefix() {
+        return msgEventLoopNamePrefix;
+    }
+
+    public void setMsgEventLoopNamePrefix(String msgEventLoopNamePrefix) {
+        this.msgEventLoopNamePrefix = msgEventLoopNamePrefix;
+    }
+
+    public Integer getMsgEventLoopThreads() {
+        return msgEventLoopThreads;
+    }
+
+    public void setMsgEventLoopThreads(Integer msgEventLoopThreads) {
+        this.msgEventLoopThreads = msgEventLoopThreads;
     }
 
     public String getWsPath() {
@@ -99,16 +124,15 @@ public class SpringConnectorConfig extends SpringExportConfig {
         if (getPort() == null || getPort() <= 0) {
             setPort(NetUtils.getAvailablePort());
         }
-        if (Objects.nonNull(getMsgReceiveThreadPoolOpen()) && getMsgReceiveThreadPoolOpen()) {
-            setMsgReceiveOrderedQueueOpen(true);
-        }
-        if (Objects.isNull(getMsgReceiveThreadPoolOpen()) && Objects.isNull(getMsgReceiveOrderedQueueOpen())) {
-            setMsgReceiveThreadPoolOpen(true);
-            setMsgReceiveOrderedQueueOpen(true);
-        }
         UrlProperties url = super.toUrl();
         if (url.getParameter(NetConstants.CODEC_KEY) == null) {
             url = url.addParameter(NetConstants.CODEC_KEY, ConnectorConstants.DEFAULT_CONNECTOR_CODEC);
+        }
+        if (StringUtils.isNotEmpty(msgEventLoopNamePrefix)) {
+            url = url.addParameter(NetConstants.MSG_RECEIVE_EVENT_LOOP_PREFIX_KEY, msgEventLoopNamePrefix);
+        }
+        if (msgEventLoopThreads != null && msgEventLoopThreads > 0) {
+            url = url.addParameter(NetConstants.MSG_RECEIVE_EVENT_LOOP_THREADS_KEY, msgEventLoopThreads);
         }
         if (!StringUtils.isEmpty(getWsPath())) {
             url = url.addParameter(NetConstants.WS_URL_PATH_KEY, getWsPath());
@@ -116,8 +140,8 @@ public class SpringConnectorConfig extends SpringExportConfig {
         if (Objects.nonNull(getOpenWsSsl())) {
             url = url.addParameter(NetConstants.WS_OPEN_SSL, getOpenWsSsl());
         }
-        if (msgReceiveOrderedQueueOpen != null) {
-            url = url.addParameter(NetConstants.MSG_RECEIVE_ORDERED_QUEUE_OPEN_KEY, msgReceiveOrderedQueueOpen.toString());
+        if (msgReceiveEventLoopOpen != null) {
+            url = url.addParameter(NetConstants.MSG_RECEIVE_EVENT_LOOP_KEY, msgReceiveEventLoopOpen.toString());
         }
         url = url.addParameter(NetConstants.IP_LIMIT_NUM, ipLimit);
         url = bigEndian == null ? url.addParameter(NetConstants.BYTE_ODER_BIG_ENDIAN_KEY, false) : url.addParameter(NetConstants.BYTE_ODER_BIG_ENDIAN_KEY, getBigEndian());

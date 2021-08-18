@@ -67,12 +67,12 @@
         <maven_release_plugin>2.5.1</maven_release_plugin>
         <nexus_staging_maven_plugin>1.6.7</nexus_staging_maven_plugin>
         <!--spring-->
-        <spring_version>5.2.0.RELEASE</spring_version>
-        <spring_boot_version>2.2.0.RELEASE</spring_boot_version>
+        <spring_version>5.3.8</spring_version>
+        <spring_boot_version>2.5.2</spring_boot_version>
         <!--bitactor-core-->
-        <bitactor_core_vision>1.0.3</bitactor_core_vision>
+        <bitactor_core_vision>1.0.4</bitactor_core_vision>
         <!--框架版本-->
-        <revision>1.0.3</revision>
+        <revision>1.0.4</revision>
     </properties>
     <dependencyManagement>
         <dependencies>
@@ -202,7 +202,7 @@
                 <version>${maven_gpg_plugin}</version>
                 <executions>
                     <execution>
-                        <phase>verify</phase>
+                        <phase>deploy</phase>
                         <goals>
                             <goal>sign</goal>
                         </goals>
@@ -238,7 +238,7 @@
                         <artifactId>maven-gpg-plugin</artifactId>
                         <executions>
                             <execution>
-                                <phase>verify</phase>
+                                <phase>deploy</phase>
                                 <goals>
                                     <goal>sign</goal>
                                 </goals>

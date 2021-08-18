@@ -50,7 +50,7 @@
     </developers>
 
     <properties>
-        <revision>1.0.3</revision>
+        <revision>1.0.4</revision>
         <!--maven plugin-->
         <maven_flatten_version>1.1.0</maven_flatten_version>
         <maven_source_plugin>2.2.1</maven_source_plugin>
@@ -154,7 +154,7 @@
                 <version>${maven_gpg_plugin}</version>
                 <executions>
                     <execution>
-                        <phase>verify</phase>
+                        <phase>deploy</phase>
                         <goals>
                             <goal>sign</goal>
                         </goals>
@@ -190,7 +190,7 @@
                         <artifactId>maven-gpg-plugin</artifactId>
                         <executions>
                             <execution>
-                                <phase>verify</phase>
+                                <phase>deploy</phase>
                                 <goals>
                                     <goal>sign</goal>
                                 </goals>

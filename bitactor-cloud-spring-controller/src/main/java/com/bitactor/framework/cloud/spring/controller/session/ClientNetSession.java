@@ -29,6 +29,7 @@ public class ClientNetSession {
     private HashMap<String, Object> param = new HashMap<String, Object>();
     private SessionId sessionId;
     private Object uid;
+    private Object userId;
 
     public ClientNetSession(String sessionId, String sid) {
         this.sessionId = new SessionId(sessionId, sid);
@@ -56,6 +57,22 @@ public class ClientNetSession {
 
     public void setUid(Object uid) {
         this.uid = uid;
+    }
+
+    public <T> T typeUid() {
+        return (T) uid;
+    }
+
+    public Object getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Object userId) {
+        this.userId = userId;
+    }
+
+    public <T> T typeUserId() {
+        return (T) userId;
     }
 
     public void addParam(String key, Object value) {
@@ -94,9 +111,9 @@ public class ClientNetSession {
         return sb.toString();
     }
 
-    public OnlineInfo build() {
-        OnlineInfo onlineInfo = new OnlineInfo();
-        onlineInfo.setId(getUid());
+    public <T> OnlineInfo<T> build() {
+        OnlineInfo<T> onlineInfo = new OnlineInfo<T>();
+        onlineInfo.setId(typeUserId());
         onlineInfo.setSessionId(getSessionId());
         onlineInfo.setParams(new HashMap<>(getParam()));
         return onlineInfo;

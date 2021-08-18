@@ -34,6 +34,7 @@ import com.bitactor.framework.core.utils.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.ContextClosedEvent;
 import org.springframework.context.event.ContextRefreshedEvent;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -44,6 +45,7 @@ import java.util.List;
 /**
  * @author WXH
  */
+@Order(100)
 @Component
 public class ConnectorStarter implements BitactorStarter, ConnectorChannelHandler {
     private final static Logger logger = LoggerFactory.getLogger(ConnectorStarter.class);

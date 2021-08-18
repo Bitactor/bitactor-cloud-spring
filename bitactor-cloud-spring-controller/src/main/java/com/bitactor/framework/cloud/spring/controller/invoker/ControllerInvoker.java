@@ -18,6 +18,8 @@
 package com.bitactor.framework.cloud.spring.controller.invoker;
 
 
+import com.bitactor.framework.cloud.spring.controller.annotation.constants.AsyncEnum;
+import com.bitactor.framework.cloud.spring.controller.annotation.constants.AuthEnum;
 import com.bitactor.framework.cloud.spring.model.utils.MessageUtil;
 import com.bitactor.framework.cloud.spring.controller.annotation.BitactorController;
 import com.bitactor.framework.cloud.spring.controller.annotation.BitactorRequestMapping;
@@ -121,27 +123,27 @@ public class ControllerInvoker {
     }
 
     /**
-     * 是否是异步执行，controller 优先于 mapping
+     * 是否是异步执行 mapping 优先于 controller
      *
      * @return
      */
     public boolean async() {
-        if (getController().async()) {
-            return true;
+        if (getMapping().async().equals(AsyncEnum.DEFAULT)) {
+            return getController().async().equals(AsyncEnum.ASYNC);
         }
-        return getMapping().async();
+        return getMapping().async().equals(AsyncEnum.ASYNC);
     }
 
     /**
-     * 是否是需要授权，controller 优先于 mapping
+     * 是否是需要授权，mapping 优先于 controller
      *
      * @return
      */
     public boolean auth() {
-        if (getController().auth()) {
-            return true;
+        if (getMapping().auth().equals(AuthEnum.DEFAULT)) {
+            return getController().auth().equals(AuthEnum.YES);
         }
-        return getMapping().auth();
+        return getMapping().auth().equals(AuthEnum.YES);
     }
 
 }

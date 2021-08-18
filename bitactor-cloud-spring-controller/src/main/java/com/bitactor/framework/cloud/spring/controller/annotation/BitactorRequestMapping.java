@@ -18,6 +18,8 @@
 package com.bitactor.framework.cloud.spring.controller.annotation;
 
 
+import com.bitactor.framework.cloud.spring.controller.annotation.constants.AsyncEnum;
+import com.bitactor.framework.cloud.spring.controller.annotation.constants.AuthEnum;
 import com.bitactor.framework.cloud.spring.model.constants.ProtocolType;
 
 import java.lang.annotation.*;
@@ -34,13 +36,13 @@ public @interface BitactorRequestMapping {
      *
      * @return
      */
-    boolean async() default false;
+    AsyncEnum async() default AsyncEnum.DEFAULT;
     /**
      * 是否需要授权
      *
      * @return
      */
-    boolean auth() default false;
+    AuthEnum auth() default AuthEnum.DEFAULT;
 
     /**
      * 请求消息的序列化id，默认序列化对象名的hashcode

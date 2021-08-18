@@ -17,7 +17,9 @@
 
 package com.bitactor.framework.cloud.spring.core;
 
+import com.bitactor.framework.cloud.spring.core.constants.BitactorGlobalConst;
 import com.bitactor.framework.core.constant.CommonConstants;
+import com.bitactor.framework.core.utils.assist.IdUtils;
 import com.bitactor.framework.core.utils.lang.StringUtils;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactory;
@@ -29,8 +31,6 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.lang.Nullable;
-
-import java.net.InetAddress;
 
 /**
  * @author WXH
@@ -77,21 +77,24 @@ public class BitactorApplicationProperties implements InitializingBean, BeanFact
         this.project = project;
     }
 
-    public boolean isConnector(){
+    public boolean isConnector() {
         return connector;
     }
 
     protected void setConnector(boolean connector) {
         this.connector = connector;
     }
+
     private EmbeddedValueResolver embeddedValueResolver;
+
     @Override
     public void afterPropertiesSet() throws Exception {
         this.setId(this.embeddedValueResolver.resolveStringValue(this.getId()));
         this.setName(this.embeddedValueResolver.resolveStringValue(this.getName()));
         this.setProject(this.embeddedValueResolver.resolveStringValue(this.getProject()));
         if (StringUtils.isEmpty(this.getId())) {
-            this.setId(InetAddress.getLocalHost().getHostAddress());
+            String persistID = IdUtils.tryGetPersistID(getName() + "@" + BitactorGlobalConst.APP_ID_FILE_NAME);
+            this.setId(persistID);
         }
         this.setId(this.embeddedValueResolver.resolveStringValue(this.getId()));
     }

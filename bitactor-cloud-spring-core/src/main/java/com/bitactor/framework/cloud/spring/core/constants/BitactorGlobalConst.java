@@ -15,14 +15,14 @@
  * limitations under the License.
  */
 
-package com.bitactor.framework.cloud.spring.controller.concurrent;
-
-
-import com.bitactor.framework.cloud.spring.controller.session.ClientNetSession;
+package com.bitactor.framework.cloud.spring.core.constants;
 
 /**
  * @author WXH
  */
-public interface ThreadAdapter {
-    void doIt(ClientNetSession session, Runnable runnable);
+public class BitactorGlobalConst {
+    /**
+     * 应用id的 持久化文件名
+     */
+    public static final String APP_ID_FILE_NAME = "AppId";
 }

@@ -24,7 +24,13 @@ import org.springframework.context.event.ContextRefreshedEvent;
  * @author WXH
  */
 public interface BitactorStarter {
+    /**
+     * 启动器类型
+     *
+     * @return
+     */
     String type();
+
     /**
      * 启动服务
      *
