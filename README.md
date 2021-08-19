@@ -1,7 +1,7 @@
 
 
 <h1 align="center">
- <a href="http://cloud.bitactor.com" title="Bitactor Cloud">Bitactor Cloud</a>
+ <a href="https://www.bitactor.com" title="Bitactor Cloud">Bitactor Cloud</a>
 </h1>
 
 
@@ -117,8 +117,6 @@ spring:
       port: 8899
       # TCP WS KCP
       net-protocol: TCP
-      # ws-path: "/front"
-      open-ws-ssl: true
 ```
 
 #### 分布式服务
@@ -127,6 +125,6 @@ spring:
     <dependency>
         <groupId>com.bitactor.framework.cloud.spring.boot</groupId>
         <artifactId>bitactor-cloud-cluster-spring-boot-starter</artifactId>
-        <version>1.0.0</version>
+        <version>LATEST</version>
     </dependency>
 ```
