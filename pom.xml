@@ -70,9 +70,9 @@
         <spring_version>5.3.8</spring_version>
         <spring_boot_version>2.5.2</spring_boot_version>
         <!--bitactor-core-->
-        <bitactor_core_vision>1.0.4</bitactor_core_vision>
+        <bitactor_core_vision>1.1.0.SNAPSHOT</bitactor_core_vision>
         <!--框架版本-->
-        <revision>1.0.4</revision>
+        <revision>1.1.0.SNAPSHOT</revision>
     </properties>
     <dependencyManagement>
         <dependencies>

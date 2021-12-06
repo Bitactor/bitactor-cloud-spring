@@ -76,6 +76,10 @@ public class SpringExportConfig {
      * 网络协议，目前支持TCP,KCP
      */
     private String netProtocol;
+    /**
+     * 网络通道初始化处理类
+     */
+    private String channelInitClazz;
 
     public String getHost() {
         return host;
@@ -157,6 +161,14 @@ public class SpringExportConfig {
         this.netProtocol = netProtocol;
     }
 
+    public String getChannelInitClazz() {
+        return channelInitClazz;
+    }
+
+    public void setChannelInitClazz(String channelInitClazz) {
+        this.channelInitClazz = channelInitClazz;
+    }
+
     public UrlProperties toUrl() {
         Map<String, String> parameters = new HashMap<String, String>();
         if (StringUtils.isNotEmpty(codec)) {
@@ -179,6 +191,9 @@ public class SpringExportConfig {
         }
         if (heartbeatPeriod != null && heartbeatPeriod > 1000) {
             parameters.put(NetConstants.HEARTBEAT_PERIOD_KEY, heartbeatPeriod.toString());
+        }
+        if (channelInitClazz != null) {
+            parameters.put(NetConstants.CHANNEL_INIT_CLASS_KEY, channelInitClazz);
         }
         UrlProperties url = new UrlProperties(NetConstants.DEFAULT_PROTOCOL, getHost(), getPort(), parameters);
         url = netProtocol == null ? url : url.addParameter(NetConstants.NET_PROTOCOL_KEY, netProtocol);
