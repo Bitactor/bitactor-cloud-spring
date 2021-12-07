@@ -26,6 +26,7 @@ import com.bitactor.framework.cloud.spring.model.codec.MessageConnectorData;
 import com.bitactor.framework.core.logger.Logger;
 import com.bitactor.framework.core.logger.LoggerFactory;
 import com.bitactor.framework.core.net.api.transport.message.MessageWrapper;
+import com.bitactor.framework.core.net.netty.channel.ChannelNettySendPolicy;
 import com.bitactor.framework.core.net.netty.channel.NettyChannel;
 import com.bitactor.framework.core.net.netty.channel.NettyChannelContext;
 import org.springframework.beans.BeansException;
@@ -41,8 +42,8 @@ public class ConnNettyChannel extends NettyChannel {
     private ControllerContext controllerContext;
 
 
-    public ConnNettyChannel(NettyChannelContext channelContext, ClientNetSession session, ControllerContext controllerContext) {
-        super(channelContext);
+    public ConnNettyChannel(NettyChannelContext channelContext, ClientNetSession session, ControllerContext controllerContext, ChannelNettySendPolicy sendPolicy) {
+        super(channelContext, sendPolicy);
         this.session = session;
         this.controllerContext = controllerContext;
     }

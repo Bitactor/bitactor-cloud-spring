@@ -25,6 +25,7 @@ import com.bitactor.framework.cloud.spring.model.utils.MessageUtil;
 import com.bitactor.framework.core.logger.Logger;
 import com.bitactor.framework.core.logger.LoggerFactory;
 import com.bitactor.framework.core.net.api.Channel;
+import io.netty.channel.ChannelFuture;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -52,14 +53,14 @@ public class ConnectorMsgSender extends MsgSender {
 
     @Override
     protected void sendMsgImpl(SessionId sessionId, int commandId, Object msg) throws Throwable {
-        Channel channel = connectorChannelHandler.getConnectorChannel(sessionId);
+        Channel<ChannelFuture> channel = connectorChannelHandler.getConnectorChannel(sessionId);
         channel.send(MessageConnectorData.builder(MessageUtil.encode(msg), MessageUtil.checkObjType(msg.getClass()).valueInt(), commandId));
     }
 
     @Override
     protected void broadcastAssignImpl(List<SessionId> sessionIds, int commandId, Object object) throws Throwable {
-        List<Channel> channels = connectorChannelHandler.getConnectorChannels(sessionIds);
-        for (Channel channel : channels) {
+        List<Channel<ChannelFuture>> channels = connectorChannelHandler.getConnectorChannels(sessionIds);
+        for (Channel<ChannelFuture> channel : channels) {
             channel.send(MessageConnectorData.builder(MessageUtil.encode(object), MessageUtil.checkObjType(object.getClass()).valueInt(), commandId));
         }
     }

@@ -28,6 +28,7 @@ import com.bitactor.framework.core.net.api.Channel;
 import com.bitactor.framework.core.net.api.ChannelManager;
 import com.bitactor.framework.core.net.api.transport.AbstractServer;
 import com.bitactor.framework.core.net.netty.server.NettyModeServer;
+import io.netty.channel.ChannelFuture;
 
 import java.util.Collection;
 import java.util.List;
@@ -39,12 +40,10 @@ import java.util.Optional;
 public class ConnectorModule {
     private BitactorConnectorProperties properties;
     private BitactorApplicationProperties appProperties;
+    private ChannelManager<ChannelFuture> channelManager;
+    private AbstractServer<ChannelFuture> server;
 
-    private ChannelManager channelManager;
-
-    private AbstractServer server;
-
-    public ConnectorModule(BitactorConnectorProperties properties, BitactorApplicationProperties appProperties, ChannelManager channelManager) {
+    public ConnectorModule(BitactorConnectorProperties properties, BitactorApplicationProperties appProperties, ChannelManager<ChannelFuture> channelManager) {
         this.properties = properties;
         this.appProperties = appProperties;
         this.channelManager = channelManager;
@@ -62,7 +61,7 @@ public class ConnectorModule {
         return appProperties;
     }
 
-    public ChannelManager getChannelManager() {
+    public ChannelManager<ChannelFuture> getChannelManager() {
         return channelManager;
     }
 
@@ -105,7 +104,7 @@ public class ConnectorModule {
      * @param channelIds
      * @return
      */
-    public List<Channel> getChannels(List<String> channelIds) {
+    public List<Channel<ChannelFuture>> getChannels(List<String> channelIds) {
         return server.getChannels(channelIds);
     }
 
@@ -115,7 +114,7 @@ public class ConnectorModule {
      * @param channelId 通道id
      * @return 通道实例
      */
-    public Channel getChannel(String channelId) {
+    public Channel<ChannelFuture> getChannel(String channelId) {
         return server.getChannel(channelId);
     }
 
@@ -124,7 +123,7 @@ public class ConnectorModule {
      *
      * @return
      */
-    public Collection<Channel> getChannels() {
+    public Collection<Channel<ChannelFuture>> getChannels() {
         return server.getChannels();
     }
 }

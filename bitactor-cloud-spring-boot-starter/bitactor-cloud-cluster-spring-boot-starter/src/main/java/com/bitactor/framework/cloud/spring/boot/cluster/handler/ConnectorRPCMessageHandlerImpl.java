@@ -27,6 +27,7 @@ import com.bitactor.framework.cloud.spring.rpc.handler.ConnectorRPCMessageHandle
 import com.bitactor.framework.core.logger.Logger;
 import com.bitactor.framework.core.logger.LoggerFactory;
 import com.bitactor.framework.core.net.api.Channel;
+import io.netty.channel.ChannelFuture;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Collection;
@@ -46,23 +47,23 @@ public class ConnectorRPCMessageHandlerImpl implements ConnectorRPCMessageHandle
 
     @Override
     public void broadcastAssign(List<SessionId> sessionIds, ProtocolType protoType, int commandId, byte[] msg) {
-        List<Channel> channels = connectorChannelHandler.getConnectorChannels(sessionIds);
-        for (Channel channel : channels) {
+        List<Channel<ChannelFuture>> channels = connectorChannelHandler.getConnectorChannels(sessionIds);
+        for (Channel<ChannelFuture> channel : channels) {
             channel.send(MessageConnectorData.builder(msg, protoType.valueInt(), commandId));
         }
     }
 
     @Override
     public void broadcastAll(ProtocolType protoType, int commandId, byte[] msg) {
-        Collection<Channel> channels = connectorChannelHandler.getConnectorChannels();
-        for (Channel channel : channels) {
+        Collection<Channel<ChannelFuture>> channels = connectorChannelHandler.getConnectorChannels();
+        for (Channel<ChannelFuture> channel : channels) {
             channel.send(MessageConnectorData.builder(msg, protoType.valueInt(), commandId));
         }
     }
 
     @Override
     public void notify(SessionId sessionId, ProtocolType protoType, int commandId, byte[] msg) {
-        Channel channel = connectorChannelHandler.getConnectorChannel(sessionId);
+        Channel<ChannelFuture> channel = connectorChannelHandler.getConnectorChannel(sessionId);
         channel.send(MessageConnectorData.builder(msg, protoType.valueInt(), commandId));
     }
 }

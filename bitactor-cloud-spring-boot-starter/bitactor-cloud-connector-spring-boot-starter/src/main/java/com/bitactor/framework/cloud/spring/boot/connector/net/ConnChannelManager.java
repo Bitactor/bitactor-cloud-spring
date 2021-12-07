@@ -18,6 +18,7 @@
 package com.bitactor.framework.cloud.spring.boot.connector.net;
 
 
+import com.bitactor.framework.cloud.spring.boot.connector.sender.ConnectorChannelNettySendPolicy;
 import com.bitactor.framework.cloud.spring.controller.session.ClientNetSession;
 import com.bitactor.framework.cloud.spring.controller.support.ControllerContext;
 import com.bitactor.framework.core.logger.Logger;
@@ -26,27 +27,30 @@ import com.bitactor.framework.core.net.api.Channel;
 import com.bitactor.framework.core.net.api.ChannelContext;
 import com.bitactor.framework.core.net.api.ChannelManager;
 import com.bitactor.framework.core.net.netty.channel.NettyChannelContext;
+import io.netty.channel.ChannelFuture;
 
 /**
  * @author WXH
  */
-public class ConnChannelManager implements ChannelManager {
+public class ConnChannelManager implements ChannelManager<ChannelFuture> {
     private static final Logger logger = LoggerFactory.getLogger(ConnChannelManager.class);
 
     private ControllerContext controllerContext;
+    private ConnectorChannelNettySendPolicy sendPolicy;
 
-    public ConnChannelManager(ControllerContext controllerContext) {
+    public ConnChannelManager(ControllerContext controllerContext, ConnectorChannelNettySendPolicy sendPolicy) {
         this.controllerContext = controllerContext;
+        this.sendPolicy = sendPolicy;
     }
 
     @Override
-    public Channel registerChannel(ChannelContext channelContext) {
+    public Channel<ChannelFuture> registerChannel(ChannelContext channelContext) {
         ClientNetSession session = new ClientNetSession(((NettyChannelContext) channelContext).getContext().channel().id().toString(), controllerContext.getBitactorApplicationProperties().getSID());
-        return new ConnNettyChannel((NettyChannelContext) channelContext, session, controllerContext);
+        return new ConnNettyChannel((NettyChannelContext) channelContext, session, controllerContext, sendPolicy);
     }
 
     @Override
-    public Channel destroyChannel(String channelId) {
+    public Channel<ChannelFuture> destroyChannel(String channelId) {
         return null;
     }
 
