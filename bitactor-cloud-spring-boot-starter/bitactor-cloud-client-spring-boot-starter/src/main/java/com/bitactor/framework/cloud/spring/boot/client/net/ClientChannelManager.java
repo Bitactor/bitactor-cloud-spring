@@ -20,6 +20,7 @@ package com.bitactor.framework.cloud.spring.boot.client.net;
 
 import com.bitactor.framework.cloud.spring.boot.client.extension.ClientEntity;
 import com.bitactor.framework.cloud.spring.boot.client.extension.ClientManager;
+import com.bitactor.framework.cloud.spring.boot.client.sender.ClientChannelNettySendPolicy;
 import com.bitactor.framework.core.net.api.Channel;
 import com.bitactor.framework.core.net.api.ChannelContext;
 import com.bitactor.framework.core.net.api.ChannelManager;
@@ -37,10 +38,12 @@ public class ClientChannelManager implements ChannelManager {
 
     private ClientEntity entity;
     private ClientManager clientManager;
+    private ClientChannelNettySendPolicy sendPolicy;
 
-    public ClientChannelManager(ClientEntity entity, ClientManager clientManager) {
+    public ClientChannelManager(ClientEntity entity, ClientManager clientManager, ClientChannelNettySendPolicy sendPolicy) {
         this.entity = entity;
         this.clientManager = clientManager;
+        this.sendPolicy = sendPolicy;
     }
 
     public ClientEntity getEntity() {
@@ -49,7 +52,7 @@ public class ClientChannelManager implements ChannelManager {
 
     @Override
     public Channel registerChannel(ChannelContext channelContext) {
-        Channel channel = new ClientChannel((NettyChannelContext) channelContext, this);
+        Channel channel = new ClientChannel((NettyChannelContext) channelContext, this, sendPolicy);
         channels.put(channel.getChannelId(), channel);
         return channel;
     }

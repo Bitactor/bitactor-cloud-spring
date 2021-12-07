@@ -20,6 +20,7 @@ package com.bitactor.framework.cloud.spring.controller.extension;
 
 import com.bitactor.framework.cloud.spring.controller.session.SessionId;
 import com.bitactor.framework.core.net.api.Channel;
+import io.netty.channel.ChannelFuture;
 
 import java.util.Collection;
 import java.util.List;
@@ -34,19 +35,20 @@ public interface ConnectorChannelHandler {
      * @param channelIds
      * @return
      */
-    List<Channel> getConnectorChannels(List<SessionId> channelIds);
+    List<Channel<ChannelFuture>> getConnectorChannels(List<SessionId> channelIds);
+
     /**
      * 返回一个通道实例
      *
      * @param sessionId sessionId
      * @return 通道实例
      */
-    Channel getConnectorChannel(SessionId sessionId);
+    Channel<ChannelFuture> getConnectorChannel(SessionId sessionId);
 
     /**
      * 获取通道集合
      *
      * @return
      */
-    Collection<Channel> getConnectorChannels();
+    Collection<Channel<ChannelFuture>> getConnectorChannels();
 }

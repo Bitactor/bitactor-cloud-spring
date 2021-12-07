@@ -20,6 +20,7 @@ package com.bitactor.framework.cloud.spring.boot.client.net;
 
 import com.bitactor.framework.cloud.spring.model.codec.MessageConnectorData;
 import com.bitactor.framework.core.net.api.transport.message.MessageWrapper;
+import com.bitactor.framework.core.net.netty.channel.ChannelNettySendPolicy;
 import com.bitactor.framework.core.net.netty.channel.NettyChannel;
 import com.bitactor.framework.core.net.netty.channel.NettyChannelContext;
 
@@ -29,8 +30,8 @@ import com.bitactor.framework.core.net.netty.channel.NettyChannelContext;
 public class ClientChannel extends NettyChannel {
     private ClientChannelManager manager;
 
-    public ClientChannel(NettyChannelContext channelContext, ClientChannelManager manager) {
-        super(channelContext);
+    public ClientChannel(NettyChannelContext channelContext, ClientChannelManager manager, ChannelNettySendPolicy sendPolicy) {
+        super(channelContext, sendPolicy);
         this.manager = manager;
     }
 

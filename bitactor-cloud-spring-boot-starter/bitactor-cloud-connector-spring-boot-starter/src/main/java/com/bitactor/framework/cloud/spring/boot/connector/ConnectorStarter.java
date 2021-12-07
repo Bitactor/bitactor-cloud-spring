@@ -20,6 +20,7 @@ package com.bitactor.framework.cloud.spring.boot.connector;
 
 import com.bitactor.framework.cloud.spring.boot.connector.module.ConnectorModule;
 import com.bitactor.framework.cloud.spring.boot.connector.net.ConnChannelManager;
+import com.bitactor.framework.cloud.spring.boot.connector.sender.ConnectorChannelNettySendPolicy;
 import com.bitactor.framework.cloud.spring.controller.extension.ConnectorChannelHandler;
 import com.bitactor.framework.cloud.spring.controller.session.SessionId;
 import com.bitactor.framework.cloud.spring.controller.support.ControllerContext;
@@ -31,6 +32,7 @@ import com.bitactor.framework.core.logger.LoggerFactory;
 import com.bitactor.framework.core.net.api.Channel;
 import com.bitactor.framework.core.utils.collection.CollectionUtils;
 import com.bitactor.framework.core.utils.lang.StringUtils;
+import io.netty.channel.ChannelFuture;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.ContextClosedEvent;
 import org.springframework.context.event.ContextRefreshedEvent;
@@ -56,6 +58,8 @@ public class ConnectorStarter implements BitactorStarter, ConnectorChannelHandle
     private BitactorConnectorProperties bitactorConnectorProperties;
     @Autowired
     private BitactorApplicationProperties bitactorApplicationProperties;
+    @Autowired
+    private ConnectorChannelNettySendPolicy connectorChannelNettySendPolicy;
 
     @Override
     public String type() {
@@ -64,7 +68,7 @@ public class ConnectorStarter implements BitactorStarter, ConnectorChannelHandle
 
     @Override
     public void start(ContextRefreshedEvent contextRefreshedEvent) throws Throwable {
-        connector = new ConnectorModule(bitactorConnectorProperties, bitactorApplicationProperties, new ConnChannelManager(controllerContext));
+        connector = new ConnectorModule(bitactorConnectorProperties, bitactorApplicationProperties, new ConnChannelManager(controllerContext, connectorChannelNettySendPolicy));
         connector.exportConnector();
         logger.info("Finish init gateway....");
     }
@@ -82,16 +86,16 @@ public class ConnectorStarter implements BitactorStarter, ConnectorChannelHandle
      * @param channelIds
      * @return
      */
-    public List<Channel> getConnectorChannels(List<SessionId> channelIds) {
+    public List<Channel<ChannelFuture>> getConnectorChannels(List<SessionId> channelIds) {
         if (CollectionUtils.isEmpty(channelIds)) {
             return Collections.emptyList();
         }
         if (connector == null) {
             return Collections.emptyList();
         }
-        ArrayList<Channel> channels = new ArrayList<Channel>();
+        ArrayList<Channel<ChannelFuture>> channels = new ArrayList<>();
         for (SessionId sessionId : channelIds) {
-            Channel channel = getConnectorChannel(sessionId);
+            Channel<ChannelFuture> channel = getConnectorChannel(sessionId);
             if (channel != null) {
                 channels.add(channel);
             }
@@ -106,7 +110,7 @@ public class ConnectorStarter implements BitactorStarter, ConnectorChannelHandle
      * @return 通道实例
      */
     @Override
-    public Channel getConnectorChannel(SessionId sessionId) {
+    public Channel<ChannelFuture> getConnectorChannel(SessionId sessionId) {
         if (sessionId == null) {
             return null;
         }
@@ -125,7 +129,7 @@ public class ConnectorStarter implements BitactorStarter, ConnectorChannelHandle
      * @return
      */
     @Override
-    public Collection<Channel> getConnectorChannels() {
+    public Collection<Channel<ChannelFuture>> getConnectorChannels() {
         if (connector == null) {
             return Collections.emptyList();
         }

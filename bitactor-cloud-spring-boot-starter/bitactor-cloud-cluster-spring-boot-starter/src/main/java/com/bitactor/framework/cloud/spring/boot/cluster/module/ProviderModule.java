@@ -21,6 +21,7 @@ package com.bitactor.framework.cloud.spring.boot.cluster.module;
 import com.bitactor.framework.cloud.spring.boot.cluster.BitactorClusterProperties;
 import com.bitactor.framework.cloud.spring.boot.cluster.config.SpringProviderConfig;
 import com.bitactor.framework.cloud.spring.boot.cluster.register.RegistryManager;
+import com.bitactor.framework.cloud.spring.boot.cluster.sender.ProviderChannelNettySendPolicy;
 import com.bitactor.framework.cloud.spring.boot.cluster.support.RegistrySupport;
 import com.bitactor.framework.cloud.spring.core.BitactorApplicationProperties;
 import com.bitactor.framework.core.Version;
@@ -36,6 +37,7 @@ import com.bitactor.framework.core.rpc.netty.ProviderExport;
 import com.bitactor.framework.core.utils.assist.ConfigUtils;
 import com.bitactor.framework.core.utils.collection.CollectionUtils;
 import com.bitactor.framework.core.utils.lang.StringUtils;
+import io.netty.channel.ChannelFuture;
 
 import java.util.*;
 import java.util.concurrent.TimeoutException;
@@ -46,20 +48,27 @@ import java.util.concurrent.TimeoutException;
  */
 public class ProviderModule extends RegistrySupport {
     private static final Logger logger = LoggerFactory.getLogger(ProviderModule.class);
-    private AbstractExport export;
+    private AbstractExport<ChannelFuture> export;
     private Set<TClassWrapper> serviceWrapper;
     private Set<String> controllerList;
+    private ProviderChannelNettySendPolicy sendPolicy;
 
-    public ProviderModule(BitactorApplicationProperties appProperties, BitactorClusterProperties clusterProperties, RegistryManager registryManager, Set<TClassWrapper> serviceWrapper, Set<String> controllerList) {
+    public ProviderModule(BitactorApplicationProperties appProperties
+            , BitactorClusterProperties clusterProperties
+            , RegistryManager registryManager
+            , Set<TClassWrapper> serviceWrapper
+            , Set<String> controllerList
+            , ProviderChannelNettySendPolicy sendPolicy) {
         super(appProperties, clusterProperties, registryManager);
         this.serviceWrapper = serviceWrapper;
         this.controllerList = controllerList;
+        this.sendPolicy = sendPolicy;
     }
 
 
     public void doExport() throws Throwable {
         checkCanExport();
-        export = new ProviderExport();
+        export = new ProviderExport(sendPolicy);
         UrlProperties providerUrl = buildProviderUrl();
         export.addUrl(providerUrl);
         if (CollectionUtils.isEmpty(serviceWrapper)) {
