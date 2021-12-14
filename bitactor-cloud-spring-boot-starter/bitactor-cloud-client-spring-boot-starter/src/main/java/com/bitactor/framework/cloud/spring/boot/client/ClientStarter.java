@@ -21,6 +21,7 @@ import com.bitactor.framework.cloud.spring.boot.client.config.SpringClientConfig
 import com.bitactor.framework.cloud.spring.boot.client.extension.ClientAllReady;
 import com.bitactor.framework.cloud.spring.boot.client.extension.ClientEntity;
 import com.bitactor.framework.cloud.spring.boot.client.extension.ClientManager;
+import com.bitactor.framework.cloud.spring.boot.client.net.ClientNettyChannelInit;
 import com.bitactor.framework.cloud.spring.boot.client.net.ClientChannelManager;
 import com.bitactor.framework.cloud.spring.boot.client.sender.ClientChannelNettySendPolicy;
 import com.bitactor.framework.cloud.spring.core.BitactorApplicationProperties;
@@ -54,6 +55,8 @@ public class ClientStarter implements BitactorStarter {
     private ClientAllReady clientAllReady;
     @Autowired(required = false)
     private ClientChannelNettySendPolicy clientChannelNettySendPolicy;
+    @Autowired(required = false)
+    private ClientNettyChannelInit clientChannelInit;
 
     @Override
     public String type() {
@@ -69,7 +72,7 @@ public class ClientStarter implements BitactorStarter {
             try {
                 logger.info("begin build client");
                 ClientEntity clientEntity = clientManager.buildNext();
-                NettyModeClient client = new NettyModeClient(new ClientChannelManager(clientEntity, clientManager, clientChannelNettySendPolicy), urlProperties);
+                NettyModeClient client = new NettyModeClient(new ClientChannelManager(clientEntity, clientManager, clientChannelNettySendPolicy), urlProperties, clientChannelInit);
                 clientEntity.setClient(client);
                 client.threadStart().sync();
                 clientEntity.init();

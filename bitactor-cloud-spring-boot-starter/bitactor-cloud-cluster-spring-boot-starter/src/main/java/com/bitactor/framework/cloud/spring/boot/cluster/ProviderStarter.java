@@ -19,6 +19,7 @@ package com.bitactor.framework.cloud.spring.boot.cluster;
 
 
 import com.bitactor.framework.cloud.spring.boot.cluster.module.ProviderModule;
+import com.bitactor.framework.cloud.spring.boot.cluster.net.ProviderNettyChannelInit;
 import com.bitactor.framework.cloud.spring.boot.cluster.register.RegistryManager;
 import com.bitactor.framework.cloud.spring.boot.cluster.sender.ProviderChannelNettySendPolicy;
 import com.bitactor.framework.cloud.spring.boot.cluster.support.ProviderContext;
@@ -58,6 +59,9 @@ public class ProviderStarter implements BitactorStarter {
     @Autowired(required = false)
     private ProviderChannelNettySendPolicy providerChannelNettySendPolicy;
 
+    @Autowired(required = false)
+    private ProviderNettyChannelInit providerChannelInit;
+
     @Override
     public String type() {
         return BitactorStarterType.PROVIDER;
@@ -65,7 +69,13 @@ public class ProviderStarter implements BitactorStarter {
 
     @Override
     public void start(ContextRefreshedEvent contextRefreshedEvent) throws Throwable {
-        provider = new ProviderModule(bitactorApplicationProperties, bitactorClusterProperties, registryManager, providerContext.getProviderService(), controllerContext.getControllerList(), providerChannelNettySendPolicy);
+        provider = new ProviderModule(bitactorApplicationProperties
+                , bitactorClusterProperties
+                , registryManager
+                , providerContext.getProviderService()
+                , controllerContext.getControllerList()
+                , providerChannelNettySendPolicy
+                , providerChannelInit);
         provider.doExport();
         logger.info("Finish init provider....");
     }

@@ -20,6 +20,7 @@ package com.bitactor.framework.cloud.spring.boot.cluster.module;
 
 import com.bitactor.framework.cloud.spring.boot.cluster.BitactorClusterProperties;
 import com.bitactor.framework.cloud.spring.boot.cluster.config.SpringConsumerConfig;
+import com.bitactor.framework.cloud.spring.boot.cluster.net.ConsumerNettyChannelInit;
 import com.bitactor.framework.cloud.spring.boot.cluster.register.RegistryManager;
 import com.bitactor.framework.cloud.spring.boot.cluster.sender.ConsumerChannelNettySendPolicy;
 import com.bitactor.framework.cloud.spring.boot.cluster.support.ConsumerBoundApiEvent;
@@ -56,19 +57,22 @@ public class ConsumerModule extends RegistrySupport implements NotifyListener, C
     private UrlProperties subscribeUrl;
     private ConsumerBoundApiEvent boundApiEvent;
     private ConsumerChannelNettySendPolicy sendPolicy;
+    private ConsumerNettyChannelInit consumerChannelInit;
 
-    public ConsumerModule(BitactorApplicationProperties appProperties, BitactorClusterProperties backendProperties, RegistryManager registryManager, ConsumerChannelNettySendPolicy sendPolicy) {
-        this(appProperties, backendProperties, registryManager, null, sendPolicy);
+    public ConsumerModule(BitactorApplicationProperties appProperties, BitactorClusterProperties backendProperties, RegistryManager registryManager, ConsumerChannelNettySendPolicy sendPolicy, ConsumerNettyChannelInit consumerChannelInit) {
+        this(appProperties, backendProperties, registryManager, null, sendPolicy, consumerChannelInit);
     }
 
     public ConsumerModule(BitactorApplicationProperties appProperties
             , BitactorClusterProperties clusterProperties
             , RegistryManager registryManager
             , ConsumerBoundApiEvent boundApiEvent
-            , ConsumerChannelNettySendPolicy sendPolicy) {
+            , ConsumerChannelNettySendPolicy sendPolicy
+            , ConsumerNettyChannelInit consumerChannelInit) {
         super(appProperties, clusterProperties, registryManager);
         this.boundApiEvent = boundApiEvent;
         this.sendPolicy = sendPolicy;
+        this.consumerChannelInit = consumerChannelInit;
     }
 
 
@@ -187,7 +191,7 @@ public class ConsumerModule extends RegistrySupport implements NotifyListener, C
                     // 若没有已经建立好对应group的 ConsumerBound 就新建一个，
                     // ConsumerBound 的 RouterAdapter、Filter 仅在第一次实例化ConsumerBound的时候添加，
                     // 也就是说RouterAdapter、Filter实在的实例取决于第一次订阅到的UrlProperties
-                    consumerBound = new ConsumerBound(url.getGroup(), sendPolicy) {
+                    consumerBound = new ConsumerBound(url.getGroup(), sendPolicy, consumerChannelInit) {
                         @Override
                         protected void shutdownNotify(ModeClients client) {
                             getRegistry().unregister(client.getUrl());
@@ -204,10 +208,6 @@ public class ConsumerModule extends RegistrySupport implements NotifyListener, C
                     doRegistryConsumer(url);
                 }
                 url = url.addParameter(NetConstants.LOGGER_DELAY_KEY, subscribeUrl.getParameter(NetConstants.LOGGER_DELAY_KEY, NetConstants.DEFAULT_LOGGER_DELAY));
-                // 移除提供者该配置
-                url = url.removeParameter(NetConstants.CHANNEL_INIT_CLASS_KEY);
-                // 添加订阅配置
-                url = url.addParameter(NetConstants.CHANNEL_INIT_CLASS_KEY, subscribeUrl.getParameter(NetConstants.CHANNEL_INIT_CLASS_KEY));
                 boolean changeUrl = consumerBound.addUrl(url);
                 if (boundApiEvent != null && changeUrl) {
                     boundApiEvent.boundEvent(url);

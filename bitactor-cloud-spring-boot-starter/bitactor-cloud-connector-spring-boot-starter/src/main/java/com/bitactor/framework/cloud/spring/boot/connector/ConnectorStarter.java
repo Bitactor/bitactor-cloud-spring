@@ -19,6 +19,7 @@ package com.bitactor.framework.cloud.spring.boot.connector;
 
 
 import com.bitactor.framework.cloud.spring.boot.connector.module.ConnectorModule;
+import com.bitactor.framework.cloud.spring.boot.connector.net.ConnNettyChannelInit;
 import com.bitactor.framework.cloud.spring.boot.connector.net.ConnChannelManager;
 import com.bitactor.framework.cloud.spring.boot.connector.sender.ConnectorChannelNettySendPolicy;
 import com.bitactor.framework.cloud.spring.controller.extension.ConnectorChannelHandler;
@@ -58,8 +59,10 @@ public class ConnectorStarter implements BitactorStarter, ConnectorChannelHandle
     private BitactorConnectorProperties bitactorConnectorProperties;
     @Autowired
     private BitactorApplicationProperties bitactorApplicationProperties;
-    @Autowired
+    @Autowired(required = false)
     private ConnectorChannelNettySendPolicy connectorChannelNettySendPolicy;
+    @Autowired(required = false)
+    private ConnNettyChannelInit connChannelInit;
 
     @Override
     public String type() {
@@ -68,7 +71,7 @@ public class ConnectorStarter implements BitactorStarter, ConnectorChannelHandle
 
     @Override
     public void start(ContextRefreshedEvent contextRefreshedEvent) throws Throwable {
-        connector = new ConnectorModule(bitactorConnectorProperties, bitactorApplicationProperties, new ConnChannelManager(controllerContext, connectorChannelNettySendPolicy));
+        connector = new ConnectorModule(bitactorConnectorProperties, bitactorApplicationProperties, new ConnChannelManager(controllerContext, connectorChannelNettySendPolicy), connChannelInit);
         connector.exportConnector();
         logger.info("Finish init gateway....");
     }

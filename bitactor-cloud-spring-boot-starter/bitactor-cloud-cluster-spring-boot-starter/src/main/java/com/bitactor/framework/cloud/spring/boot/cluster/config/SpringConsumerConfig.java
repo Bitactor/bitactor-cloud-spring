@@ -51,10 +51,6 @@ public class SpringConsumerConfig {
      * 是否开启订阅服务的延迟打印，在心跳开启的情况下才会打印
      */
     private Boolean loggerDelay;
-    /**
-     * 网络通道初始化处理类
-     */
-    private String channelInitClazz;
 
     public Boolean getLoggerDelay() {
         return loggerDelay;
@@ -80,21 +76,10 @@ public class SpringConsumerConfig {
         this.routerAdapter = routerAdapter;
     }
 
-    public String getChannelInitClazz() {
-        return channelInitClazz;
-    }
-
-    public void setChannelInitClazz(String channelInitClazz) {
-        this.channelInitClazz = channelInitClazz;
-    }
-
     public UrlProperties toUrl() {
         UrlProperties url = new UrlProperties(NetConstants.DEFAULT_PROTOCOL, host, port, getSubscribe());
         if (!StringUtils.isEmpty(routerAdapter)) {
             url = url.addParameter(RPCConstants.ROUTER_ADAPTER_KEY, routerAdapter);
-        }
-        if (!StringUtils.isEmpty(channelInitClazz)) {
-            url = url.addParameter(NetConstants.CHANNEL_INIT_CLASS_KEY, channelInitClazz);
         }
         url = getLoggerDelay() != null ? url.addParameter(NetConstants.LOGGER_DELAY_KEY, getLoggerDelay()) : url;
         return url;

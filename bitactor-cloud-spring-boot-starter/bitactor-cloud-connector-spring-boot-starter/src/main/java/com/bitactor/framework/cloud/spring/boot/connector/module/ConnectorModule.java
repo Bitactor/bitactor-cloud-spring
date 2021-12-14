@@ -20,6 +20,7 @@ package com.bitactor.framework.cloud.spring.boot.connector.module;
 
 import com.bitactor.framework.cloud.spring.boot.connector.BitactorConnectorProperties;
 import com.bitactor.framework.cloud.spring.boot.connector.config.SpringConnectorConfig;
+import com.bitactor.framework.cloud.spring.boot.connector.net.ConnNettyChannelInit;
 import com.bitactor.framework.cloud.spring.core.BitactorApplicationProperties;
 import com.bitactor.framework.core.config.UrlProperties;
 import com.bitactor.framework.core.constant.NetConstants;
@@ -42,11 +43,13 @@ public class ConnectorModule {
     private BitactorApplicationProperties appProperties;
     private ChannelManager<ChannelFuture> channelManager;
     private AbstractServer<ChannelFuture> server;
+    private ConnNettyChannelInit connChannelInit;
 
-    public ConnectorModule(BitactorConnectorProperties properties, BitactorApplicationProperties appProperties, ChannelManager<ChannelFuture> channelManager) {
+    public ConnectorModule(BitactorConnectorProperties properties, BitactorApplicationProperties appProperties, ChannelManager<ChannelFuture> channelManager, ConnNettyChannelInit connChannelInit) {
         this.properties = properties;
         this.appProperties = appProperties;
         this.channelManager = channelManager;
+        this.connChannelInit = connChannelInit;
     }
 
     public SpringConnectorConfig getConnectorConfig() {
@@ -68,7 +71,7 @@ public class ConnectorModule {
     public void exportConnector() throws Throwable {
         checkCanExport();
         UrlProperties exportUlr = buildUrl();
-        server = new NettyModeServer(channelManager, exportUlr);
+        server = new NettyModeServer(channelManager, exportUlr, connChannelInit);
         server.threadStart().sync();
     }
 

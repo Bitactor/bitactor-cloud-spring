@@ -20,6 +20,7 @@ package com.bitactor.framework.cloud.spring.boot.cluster.module;
 
 import com.bitactor.framework.cloud.spring.boot.cluster.BitactorClusterProperties;
 import com.bitactor.framework.cloud.spring.boot.cluster.config.SpringProviderConfig;
+import com.bitactor.framework.cloud.spring.boot.cluster.net.ProviderNettyChannelInit;
 import com.bitactor.framework.cloud.spring.boot.cluster.register.RegistryManager;
 import com.bitactor.framework.cloud.spring.boot.cluster.sender.ProviderChannelNettySendPolicy;
 import com.bitactor.framework.cloud.spring.boot.cluster.support.RegistrySupport;
@@ -52,23 +53,26 @@ public class ProviderModule extends RegistrySupport {
     private Set<TClassWrapper> serviceWrapper;
     private Set<String> controllerList;
     private ProviderChannelNettySendPolicy sendPolicy;
+    private ProviderNettyChannelInit providerChannelInit;
 
     public ProviderModule(BitactorApplicationProperties appProperties
             , BitactorClusterProperties clusterProperties
             , RegistryManager registryManager
             , Set<TClassWrapper> serviceWrapper
             , Set<String> controllerList
-            , ProviderChannelNettySendPolicy sendPolicy) {
+            , ProviderChannelNettySendPolicy sendPolicy
+            , ProviderNettyChannelInit providerChannelInit) {
         super(appProperties, clusterProperties, registryManager);
         this.serviceWrapper = serviceWrapper;
         this.controllerList = controllerList;
         this.sendPolicy = sendPolicy;
+        this.providerChannelInit = providerChannelInit;
     }
 
 
     public void doExport() throws Throwable {
         checkCanExport();
-        export = new ProviderExport(sendPolicy);
+        export = new ProviderExport(sendPolicy, providerChannelInit);
         UrlProperties providerUrl = buildProviderUrl();
         export.addUrl(providerUrl);
         if (CollectionUtils.isEmpty(serviceWrapper)) {

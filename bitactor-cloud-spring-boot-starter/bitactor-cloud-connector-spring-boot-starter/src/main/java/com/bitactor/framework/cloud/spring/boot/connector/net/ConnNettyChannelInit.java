@@ -15,34 +15,13 @@
  * limitations under the License.
  */
 
-package com.bitactor.framework.cloud.spring.boot.client.extension;
+package com.bitactor.framework.cloud.spring.boot.connector.net;
 
-import com.bitactor.framework.cloud.spring.model.utils.MessageUtil;
+import com.bitactor.framework.core.net.api.ChannelInit;
+import com.bitactor.framework.core.net.netty.channel.ChannelNettyOptions;
 
 /**
  * @author WXH
  */
-public abstract class NoticeMapping<N> {
-    private int noticeId;
-    private Class<N> noticeClazz;
-
-    public NoticeMapping(Class<N> noticeClazz) {
-        this.noticeId = MessageUtil.getCommandId(noticeClazz);
-        this.noticeClazz = noticeClazz;
-    }
-
-    public NoticeMapping(int noticeId, Class<N> noticeClazz) {
-        this.noticeId = noticeId;
-        this.noticeClazz = noticeClazz;
-    }
-
-    public abstract void notice(N notice);
-
-    public int getNoticeId() {
-        return noticeId;
-    }
-
-    public Class<?> getNoticeClazz() {
-        return noticeClazz;
-    }
+public interface ConnNettyChannelInit extends ChannelInit<ChannelNettyOptions> {
 }

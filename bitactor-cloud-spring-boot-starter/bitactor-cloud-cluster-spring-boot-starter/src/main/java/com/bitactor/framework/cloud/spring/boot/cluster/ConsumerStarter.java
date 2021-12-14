@@ -18,6 +18,7 @@
 package com.bitactor.framework.cloud.spring.boot.cluster;
 
 import com.bitactor.framework.cloud.spring.boot.cluster.module.ConsumerModule;
+import com.bitactor.framework.cloud.spring.boot.cluster.net.ConsumerNettyChannelInit;
 import com.bitactor.framework.cloud.spring.boot.cluster.register.RegistryManager;
 import com.bitactor.framework.cloud.spring.boot.cluster.sender.ConsumerChannelNettySendPolicy;
 import com.bitactor.framework.cloud.spring.boot.cluster.support.ConsumerContext;
@@ -55,6 +56,8 @@ public class ConsumerStarter implements BitactorStarter, ConsumerModuleHandler {
     private BitactorApplicationProperties bitactorApplicationProperties;
     @Autowired(required = false)
     private ConsumerChannelNettySendPolicy consumerChannelNettySendPolicy;
+    @Autowired(required = false)
+    private ConsumerNettyChannelInit consumerChannelInit;
 
     @Override
     public String type() {
@@ -66,7 +69,7 @@ public class ConsumerStarter implements BitactorStarter, ConsumerModuleHandler {
         consumer = new ConsumerModule(bitactorApplicationProperties, bitactorClusterProperties, registryManager, (url) -> {
             consumerContext.checkInjectRPCRef(consumer);
             consumerContext.initCommandId(url);
-        }, consumerChannelNettySendPolicy);
+        }, consumerChannelNettySendPolicy, consumerChannelInit);
         consumer.reference();
         logger.info("Finish init consumer....");
     }
