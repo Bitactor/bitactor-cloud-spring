@@ -81,7 +81,7 @@ MessageData 专有
 ### 单服务启动示例
 
 ```java
-@EnableBitactorConnectorConfiguration
+@EnableBitactorConnector
 @SpringBootApplication()
 @BitactorController(connector = "CONNECTOR")
 public class SingleSimpleApplication {

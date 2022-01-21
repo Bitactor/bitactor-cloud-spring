@@ -15,12 +15,12 @@
  * limitations under the License.
  */
 
-package com.bitactor.framework.cloud.spring.boot.client.annotation;
+package com.bitactor.framework.cloud.spring.boot.connector.annotation;
 
 import java.lang.annotation.*;
 
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-public @interface EnableBitactorClientConfiguration {
+public @interface EnableBitactorConnector {
 }

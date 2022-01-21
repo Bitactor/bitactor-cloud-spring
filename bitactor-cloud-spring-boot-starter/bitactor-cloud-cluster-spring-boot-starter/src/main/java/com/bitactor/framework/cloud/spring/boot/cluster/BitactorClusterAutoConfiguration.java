@@ -17,7 +17,7 @@
 
 package com.bitactor.framework.cloud.spring.boot.cluster;
 
-import com.bitactor.framework.cloud.spring.boot.cluster.annotation.EnableBitactorClusterConfiguration;
+import com.bitactor.framework.cloud.spring.boot.cluster.annotation.EnableBitactorCluster;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -28,7 +28,7 @@ import org.springframework.context.annotation.Configuration;
  * @author WXH
  */
 @Configuration
-@ConditionalOnBean(annotation = EnableBitactorClusterConfiguration.class)
+@ConditionalOnBean(annotation = EnableBitactorCluster.class)
 @ConditionalOnProperty(prefix = "spring.bitactor.cluster", value = "enabled", matchIfMissing = true)
 @EnableConfigurationProperties(BitactorClusterProperties.class)
 @ComponentScan("com.bitactor.framework.cloud.spring")

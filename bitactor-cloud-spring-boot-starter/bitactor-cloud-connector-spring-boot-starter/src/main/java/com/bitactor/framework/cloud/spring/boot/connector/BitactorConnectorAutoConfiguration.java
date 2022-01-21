@@ -17,7 +17,7 @@
 
 package com.bitactor.framework.cloud.spring.boot.connector;
 
-import com.bitactor.framework.cloud.spring.boot.connector.annotation.EnableBitactorConnectorConfiguration;
+import com.bitactor.framework.cloud.spring.boot.connector.annotation.EnableBitactorConnector;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -28,7 +28,7 @@ import org.springframework.context.annotation.Configuration;
  * @author WXH
  */
 @Configuration
-@ConditionalOnBean(annotation = EnableBitactorConnectorConfiguration.class)
+@ConditionalOnBean(annotation = EnableBitactorConnector.class)
 @ConditionalOnProperty(prefix = "spring.bitactor.connector", value = "enabled", matchIfMissing = true)
 @EnableConfigurationProperties(BitactorConnectorProperties.class)
 @ComponentScan("com.bitactor.framework.cloud.spring")
