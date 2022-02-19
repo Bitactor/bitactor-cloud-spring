@@ -86,7 +86,7 @@ MessageData 专有
 @BitactorController(connector = "CONNECTOR")
 public class SingleSimpleApplication {
     public static void main(String[] args) throws Throwable {
-        SingleSimpleApplication.run(SimpleApplication.class, args);
+        SpringApplication.run(SimpleApplication.class, args);
     }
     /**
      * 登录授权
